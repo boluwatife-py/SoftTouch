@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --radius: 8px;
+  /* Adjust to the value you want */
+  --radius-2px: 6px;
+  --radius-4px: 4px;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  /* Custom animations based on the design reference */
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideIn {
+    0% {
+      transform: translateX(-20px);
+      opacity: 0;
+    }
+
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes bounceSoft {
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+
+  @keyframes highlightSection {
+    0% {
+      box-shadow: 0 0 0 0 rgba(0, 178, 255, 0);
+    }
+
+    25% {
+      box-shadow: 0 0 0 4px rgba(0, 178, 255, 0.3);
+    }
+
+    50% {
+      box-shadow: 0 0 0 8px rgba(0, 178, 255, 0.2);
+    }
+
+    75% {
+      box-shadow: 0 0 0 4px rgba(0, 178, 255, 0.1);
+    }
+
+    100% {
+      box-shadow: 0 0 0 0 rgba(0, 178, 255, 0);
+    }
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.8s ease-in;
+  }
+
+  .animate-slideIn {
+    animation: slideIn 0.6s ease-out;
+  }
+
+  .animate-bounceSoft {
+    animation: bounceSoft 1s infinite;
+  }
+
+  .highlight-section {
+    animation: highlightSection 1.5s ease-out;
+    transition: all 0.3s ease;
+  }
+
+  /* Custom scrollbar styling */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(13, 21, 37, 0.5);
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(0, 178, 255, 0.3);
+    border-radius: 3px;
+    transition: background 0.2s ease;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 178, 255, 0.6);
+  }
+
+  .hidden-scrollbar::-webkit-scrollbar{
+    appearance: none;
+    -webkit-appearance: none;
+    display: none;
+  }
+
+  /* Firefox scrollbar */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 178, 255, 0.3) rgba(13, 21, 37, 0.5);
+  }
+}
