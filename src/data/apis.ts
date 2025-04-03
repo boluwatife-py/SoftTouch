@@ -1,3 +1,5 @@
+// const endpointUrl: string = process.env.REACT_APP_API_URL + '/endpoints'
+
 export interface ApiType {
   name: string;
   method: string;
