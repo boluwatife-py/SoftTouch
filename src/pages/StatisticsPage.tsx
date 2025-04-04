@@ -63,13 +63,14 @@ export default function StatisticsPage() {
   };
 
   // Load statistics data from API when component mounts
+  const statistcUrl: string = import.meta.env.VITE_API_URL + '/statistics'
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
         setIsLoading(true);
         setErrorMessage(null);
 
-        const response = await fetch("http://127.0.0.1/statistics");
+        const response = await fetch(statistcUrl);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

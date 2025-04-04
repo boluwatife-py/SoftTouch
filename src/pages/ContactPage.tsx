@@ -18,7 +18,7 @@ export default function ContactPage() {
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<null | 'success' | 'error'>(null); // null, 'success', or 'error'
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -32,39 +32,45 @@ export default function ContactPage() {
     }));
   };
 
+  const formUrl: string = import.meta.env.VITE_API_URL + '/contact';
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitStatus(null);
 
-    fetch("http://127.0.0.1/contact", {
+    fetch(formUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Submission failed');
+        }
+        return response.json();
+      })
       .then((data) => {
         console.log(data);
-        
         setIsSubmitting(false);
-        setSubmitSuccess(true);
+        setSubmitStatus('success');
+        setFormData({
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+        });
       })
       .catch((error) => {
         console.log(error);
-
         setIsSubmitting(false);
-        setSubmitSuccess(false);
+        setSubmitStatus('error');
       });
 
-    setFormData({
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    });
     setTimeout(() => {
-      setSubmitSuccess(false);
+      setSubmitStatus(null);
     }, 5000);
   };
 
@@ -90,14 +96,22 @@ export default function ContactPage() {
               Send Us a Message
             </h2>
 
-            {submitSuccess ? (
+            {submitStatus === 'success' && (
               <div className="bg-green-900/30 border border-green-700 text-green-100 rounded-md p-4 mb-6">
                 <p className="font-medium">Thank you for your message!</p>
                 <p className="text-sm mt-1">
                   We'll get back to you as soon as possible.
                 </p>
               </div>
-            ) : null}
+            )}
+            {submitStatus === 'error' && (
+              <div className="bg-red-900/30 border border-red-700 text-red-100 rounded-md p-4 mb-6">
+                <p className="font-medium">Oops! Something went wrong.</p>
+                <p className="text-sm mt-1">
+                  Please try again later or use another contact method.
+                </p>
+              </div>
+            )}
 
             <form onSubmit={handleSubmit}>
               <div className="mb-6">
@@ -352,7 +366,6 @@ export default function ContactPage() {
             Quick Connect
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            {/* For email, we need to keep the mailto: link */}
             <a
               href="mailto:support@softtouch.dev"
               className="bg-[#1A2332] rounded-lg p-6 text-center transition-all hover:bg-[#242e40]"
@@ -364,7 +377,6 @@ export default function ContactPage() {
               <p className="font-medium">Email Us</p>
             </a>
 
-            {/* External links should open in new tabs to prevent navigation away from our app */}
             <a
               href="https://discord.gg/softtouch"
               target="_blank"

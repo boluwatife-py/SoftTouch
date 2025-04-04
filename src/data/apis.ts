@@ -1,6 +1,4 @@
 const endpointUrl: string = import.meta.env.VITE_API_URL + '/endpoints'
-console.log(endpointUrl);
-
 
 export interface ApiType {
   name: string;
