@@ -1,4 +1,6 @@
-// const endpointUrl: string = process.env.REACT_APP_API_URL + '/endpoints'
+const endpointUrl: string = import.meta.env.VITE_API_URL + '/endpoints'
+console.log(endpointUrl);
+
 
 export interface ApiType {
   name: string;
@@ -18,7 +20,7 @@ export interface ApiType {
 
 async function fetchApis(): Promise<ApiType[]> {
   try {
-    const response = await fetch('http://127.0.0.1/endpoints', {
+    const response = await fetch(endpointUrl, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
