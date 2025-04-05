@@ -267,7 +267,6 @@ export default function ApiPage() {
                 style={{ animationDelay: `${index * 100}ms` }}
                 onClick={() => {
                   const hash = api.name.toLowerCase().replace(/\s+/g, "");
-                  window.location.href = `/docs#${hash}`;
                 }}
               >
                 <div className="p-6">
