@@ -120,8 +120,7 @@ export default function DocsPage() {
             url = `${url}?${queryParams.toString()}`;
           }
         }
-
-        console.log(`Fetching URL: ${url} with method: ${fetchOptions.method}`); // Log URL and method
+        
         const response = await fetch(url, fetchOptions);
 
         if (!response.ok) {
@@ -1042,7 +1041,7 @@ fetch('https://api.softtouch.dev/v1${api.endpoint}?${api.params
                               language="json"
                               code={
                                 result
-                                  ? JSON.stringify(result, null, 2)
+                                  ? JSON.parse(result)
                                   : "// Send a request to see the response here"
                               }
                             />
