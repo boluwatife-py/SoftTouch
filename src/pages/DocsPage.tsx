@@ -1041,7 +1041,7 @@ fetch('https://api.softtouch.dev/v1${api.endpoint}?${api.params
                               language="json"
                               code={
                                 result
-                                  ? JSON.parse(result)
+                                  ? JSON.stringify(result)
                                   : "// Send a request to see the response here"
                               }
                             />
