@@ -1,5 +1,16 @@
-import { createRoot } from "react-dom/client";
-import App from "./App";
-import "./index.css";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./shared/App";
+import "./client/index.css";
 
-createRoot(document.getElementById("root")!).render(<App />);
+const rootElement = document.getElementById("root")!;
+
+// Example: detect mode based on URL
+const isAdmin = window.location.pathname.startsWith("/admin");
+
+// You can pass props to App to switch routes/layouts internally
+ReactDOM.createRoot(rootElement).render(
+  <React.StrictMode>
+    <App mode={isAdmin ? "admin" : "client"} />
+  </React.StrictMode>
+);

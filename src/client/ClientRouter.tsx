@@ -1,27 +1,14 @@
-import { Switch, Route, useLocation, useRoute } from "wouter";
-import { queryClient } from "./lib/queryClient";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "@/components/ui/toaster";
+import { Switch, Route, useLocation } from "wouter";
 import React, { createContext, useContext, useState, useEffect, Suspense } from "react";
 import Spinner from "./components/Spinner";
-
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import HomePage from "./pages/HomePage";
-import ApiPage from "./pages/ApiPage";
-import DocsPage from "./pages/DocsPage";
-import AboutPage from "./pages/AboutPage";
-import DonatePage from "./pages/DonatePage";
-import JoinPage from "./pages/JoinPage";
-import FaqPage from "./pages/FaqPage";
-import ContactPage from "./pages/ContactPage";
-import TermsPage from "./pages/TermsPage";
-import SupportersPage from "./pages/SupportersPage";
-import StatisticsPage from "./pages/StatisticsPage";
-import NotFound from "@/pages/not-found";
-import ErrorPage from "./pages/ErrorPage";
+import {
+  HomePage, ApiPage, DocsPage, AboutPage, DonatePage, JoinPage,
+  FaqPage, ContactPage, TermsPage, SupportersPage, StatisticsPage,
+  NotFound, ErrorPage
+} from "./pages";
 
-// Create a context to manage the mobile menu state
 type NavbarContextType = {
   isMobileMenuOpen: boolean;
   setIsMobileMenuOpen: (isOpen: boolean) => void;
@@ -32,15 +19,12 @@ const NavbarContext = createContext<NavbarContextType>({
   setIsMobileMenuOpen: () => {},
 });
 
-// Ensure the context is properly initialized
 NavbarContext.displayName = 'NavbarContext';
 
-// Use a named export for the hook to avoid Fast Refresh issues
-export function useNavbar() { 
+export function useNavbar() {
   return useContext(NavbarContext);
 }
 
-// Custom Error Boundary Component
 class CustomErrorBoundary extends React.Component<
   { children: React.ReactNode },
   { hasError: boolean; error: Error | null }
@@ -61,10 +45,10 @@ class CustomErrorBoundary extends React.Component<
   render() {
     if (this.state.hasError) {
       return (
-        <ErrorPage 
-          title="Something Went Wrong" 
-          message="We're having trouble displaying this page. Please try again later." 
-          code="500" 
+        <ErrorPage
+          title="Something Went Wrong"
+          message="We're having trouble displaying this page. Please try again later."
+          code="500"
         />
       );
     }
@@ -73,38 +57,29 @@ class CustomErrorBoundary extends React.Component<
   }
 }
 
-function Router() {
+function ClientRouter() {
   const [location] = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Scroll to top and close mobile menu when location changes
   useEffect(() => {
     window.scrollTo(0, 0);
     setIsMobileMenuOpen(false);
   }, [location]);
 
-  // Close mobile menu when clicking outside or when a navigation occurs
   useEffect(() => {
-    // Only add the event listener if the menu is open
     if (!isMobileMenuOpen) return;
-    
+
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      // Skip if click is on the toggle button itself
-      if (target.closest('#mobile-menu-button')) return;
-      
-      // Close if the click is outside the mobile menu
-      if (!target.closest('#mobile-menu')) {
+      if (target.closest("#mobile-menu-button")) return;
+      if (!target.closest("#mobile-menu")) {
         setIsMobileMenuOpen(false);
       }
     };
 
-    // Add event listener
-    document.addEventListener('mousedown', handleClickOutside);
-    
-    // Cleanup
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isMobileMenuOpen]);
 
@@ -112,7 +87,7 @@ function Router() {
     <NavbarContext.Provider value={{ isMobileMenuOpen, setIsMobileMenuOpen }}>
       <div className="min-h-screen flex flex-col bg-[#0D1525] text-[#D9E1E8] font-sans">
         <Navbar />
-        <main className="flex-grow pt-16"> {/* Added padding top to account for fixed navbar */}
+        <main className="flex-grow pt-16">
           <CustomErrorBoundary>
             <Suspense fallback={<Spinner centered fullHeight size="md" />}>
               <Switch>
@@ -129,9 +104,9 @@ function Router() {
                 <Route path="/statistics" component={StatisticsPage} />
                 <Route path="/error" component={() => <ErrorPage />} />
                 <Route path="/error/:code" component={({ params }) => (
-                  <ErrorPage 
-                    code={params.code} 
-                    title={params.code === '500' ? 'Server Error' : 'Error Occurred'} 
+                  <ErrorPage
+                    code={params.code}
+                    title={params.code === "500" ? "Server Error" : "Error Occurred"}
                   />
                 )} />
                 <Route component={NotFound} />
@@ -145,13 +120,4 @@ function Router() {
   );
 }
 
-function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Router />
-      <Toaster />
-    </QueryClientProvider>
-  );
-}
-
-export default App;
+export default ClientRouter;
