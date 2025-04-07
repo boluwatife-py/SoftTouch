@@ -1,8 +1,8 @@
 import { Switch, Route, useLocation } from "wouter";
 import React, { createContext, useContext, useState, useEffect, Suspense } from "react";
-import Spinner from "./components/Spinner";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import Spinner from "@/components/Spinner";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import {
   HomePage, ApiPage, DocsPage, AboutPage, DonatePage, JoinPage,
   FaqPage, ContactPage, TermsPage, SupportersPage, StatisticsPage,

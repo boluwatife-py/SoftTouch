@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { FaBolt, FaLock, FaCode, FaGlobe, FaRocket, FaUserFriends, FaArrowRight } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { apis, ApiType } from "../data/apis";
-import Spinner from "../components/Spinner";
+import Spinner from "@/components/Spinner";
 
 export default function HomePage() {
   const [apiData, setApiData] = useState<ApiType[]>([]);

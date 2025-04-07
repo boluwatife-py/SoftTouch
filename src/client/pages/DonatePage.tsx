@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { CheckCircle } from "lucide-react";
 import { FaGithub, FaCode, FaServer, FaCoffee } from "react-icons/fa";
-import SmoothNavLink from "../components/SmoothNavLink";
+import SmoothNavLink from "@/components/SmoothNavLink";
 
 export default function DonatePage() {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);

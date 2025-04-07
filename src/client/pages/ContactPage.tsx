@@ -8,7 +8,7 @@ import {
   FaClock,
   FaDollarSign,
 } from "react-icons/fa";
-import SmoothNavLink from "../components/SmoothNavLink";
+import SmoothNavLink from "@/components/SmoothNavLink";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({

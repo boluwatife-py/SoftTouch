@@ -1,5 +1,5 @@
 import { FaHeart, FaStar, FaBuilding, FaUser, FaGlobe } from "react-icons/fa";
-import SmoothNavLink from "../components/SmoothNavLink";
+import SmoothNavLink from "@/components/SmoothNavLink";
 
 export default function SupportersPage() {
   // Sample supporters data - in a real app this would come from an API

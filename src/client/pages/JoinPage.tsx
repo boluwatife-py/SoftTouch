@@ -3,7 +3,7 @@ import {
   FaGithub, FaYoutube, FaDiscord, FaTwitter, FaCode, 
   FaComments, FaBug, FaLightbulb, FaDollarSign, FaUsers 
 } from "react-icons/fa";
-import SmoothNavLink from "../components/SmoothNavLink";
+import SmoothNavLink from "@/components/SmoothNavLink";
 
 export default function JoinPage() {
   const [activeTab, setActiveTab] = useState("community"); // "community" or "contribute"

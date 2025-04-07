@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 import { FaQuestionCircle, FaEnvelope, FaDiscord, FaGithub } from "react-icons/fa";
-import SmoothNavLink from "../components/SmoothNavLink";
+import SmoothNavLink from "@/components/SmoothNavLink";
 
 interface FaqItem {
   question: string;
