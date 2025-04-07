@@ -6,9 +6,9 @@ import NotFound from "./pages/not-found";
 import Layout from "@/components/layout/Layout";
 import EndpointsPage from "./pages/endpoints";
 import StatisticsPage from "./pages/statistics";
-import { ProtectedRoute } from "../lib/protected-route";
+import { ProtectedRoute } from "@/lib/protected-route";
 import AuthPage from "./pages/auth-page";
-import { AuthProvider } from "../hooks/use-auth";
+import { AuthProvider } from "@/hooks/use-auth";
 
 function AdminRouter() {
   return (
@@ -16,7 +16,7 @@ function AdminRouter() {
       <AuthProvider>
         <Switch>
           <ProtectedRoute
-            path="/"
+            path="/admin"
             component={() => (
               <Layout>
                 <EndpointsPage />
@@ -24,14 +24,14 @@ function AdminRouter() {
             )}
           />
           <ProtectedRoute
-            path="/statistics"
+            path="/admin/statistics"
             component={() => (
               <Layout>
                 <StatisticsPage />
               </Layout>
             )}
           />
-          <Route path="/auth" component={AuthPage} />
+          <Route path="/admin/auth" component={AuthPage} />
           <Route component={NotFound} />
         </Switch>
         <Toaster />

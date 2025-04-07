@@ -24,7 +24,7 @@ export function ProtectedRoute({
           );
         }
         
-        return user ? <Component /> : <Redirect to="/auth" />;
+        return user ? <Component /> : <Redirect to="/admin/auth" />;
       }}
     </Route>
   );
