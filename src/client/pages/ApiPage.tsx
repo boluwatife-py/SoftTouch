@@ -14,9 +14,9 @@ import {
   FaChevronRight,
   FaPlay,
 } from "react-icons/fa";
-import SmoothNavLink from "../components/SmoothNavLink";
-import Spinner from "../components/Spinner";
-import { toast } from "../hooks/use-toast";
+import SmoothNavLink from "@/components/SmoothNavLink";
+import Spinner from "@/components/Spinner";
+import { toast } from "@/hooks/use-toast";
 import {
   Command,
   CommandInput,

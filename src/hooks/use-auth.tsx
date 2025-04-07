@@ -4,39 +4,49 @@ import {
   useMutation,
   UseMutationResult,
 } from "@tanstack/react-query";
-import { User as SelectUser, InsertUser } from "@shared/schema";
-import { getQueryFn, apiRequest, queryClient } from "../lib/queryClient";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
-type AuthContextType = {
-  user: SelectUser | null;
-  isLoading: boolean;
-  error: Error | null;
-  loginMutation: UseMutationResult<SelectUser, Error, LoginData>;
-  logoutMutation: UseMutationResult<void, Error, void>;
-  registerMutation: UseMutationResult<SelectUser, Error, InsertUser>;
+type User = {
+  id: number;
+  username: string;
 };
 
-type LoginData = Pick<InsertUser, "username" | "password">;
+type AuthContextType = {
+  user: User | null;
+  isLoading: boolean;
+  error: Error | null;
+  loginMutation: UseMutationResult<User, Error, LoginData>;
+  logoutMutation: UseMutationResult<void, Error, void>;
+  registerMutation: UseMutationResult<User, Error, LoginData>;
+};
+
+type LoginData = {
+  username: string;
+  password: string;
+};
 
 export const AuthContext = createContext<AuthContextType | null>(null);
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
-  const {
-    data: user,
-    error,
-    isLoading,
-  } = useQuery<SelectUser | undefined, Error>({
+
+  const { data: user, error, isLoading } = useQuery<User | null, Error>({
     queryKey: ["/api/user"],
-    queryFn: getQueryFn({ on401: "returnNull" }),
+    queryFn: async () => {
+      const res = await apiRequest("GET", "/api/user");
+      if (res.status === 401) return null;
+      return await res.json();
+    },
   });
 
   const loginMutation = useMutation({
     mutationFn: async (credentials: LoginData) => {
       const res = await apiRequest("POST", "/api/login", credentials);
+      if (!res.ok) throw new Error(await res.text());
       return await res.json();
     },
-    onSuccess: (user: SelectUser) => {
+    onSuccess: (user: User) => {
       queryClient.setQueryData(["/api/user"], user);
       toast({
         title: "Login successful",
@@ -44,36 +54,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
     },
     onError: (error: Error) => {
-      // More specific error messages based on error text
       const errorMessage = error.message.toLowerCase();
       let title = "Login failed";
       let description = error.message;
-      
-      if (errorMessage.includes("incorrect username")) {
+
+      if (errorMessage.includes("username")) {
         title = "Invalid username";
-        description = "This username doesn't exist in our system.";
-      } else if (errorMessage.includes("incorrect password")) {
+        description = "This username doesn't exist.";
+      } else if (errorMessage.includes("password")) {
         title = "Invalid password";
-        description = "The password you entered is incorrect.";
-      } else if (errorMessage.includes("401")) {
-        title = "Authentication failed";
-        description = "Please check your credentials and try again.";
+        description = "The password is incorrect.";
       }
-      
+
       toast({
-        title: title,
-        description: description,
+        title,
+        description,
         variant: "destructive",
       });
     },
   });
 
   const registerMutation = useMutation({
-    mutationFn: async (credentials: InsertUser) => {
+    mutationFn: async (credentials: LoginData) => {
       const res = await apiRequest("POST", "/api/register", credentials);
+      if (!res.ok) throw new Error(await res.text());
       return await res.json();
     },
-    onSuccess: (user: SelectUser) => {
+    onSuccess: (user: User) => {
       queryClient.setQueryData(["/api/user"], user);
       toast({
         title: "Registration successful",
@@ -91,7 +98,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      await apiRequest("POST", "/api/logout");
+      const res = await apiRequest("POST", "/api/logout");
+      if (!res.ok) throw new Error(await res.text());
     },
     onSuccess: () => {
       queryClient.setQueryData(["/api/user"], null);

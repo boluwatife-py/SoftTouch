@@ -1,10 +1,10 @@
+// No major changes needed, just ensuring schema consistency
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
-import { insertUserSchema } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -26,11 +26,10 @@ import {
   Layers
 } from "lucide-react";
 
-// Extended schema with validation
-const authSchema = insertUserSchema.extend({
-  password: z.string().min(6, {
-    message: "Password must be at least 6 characters",
-  }),
+// Use the same schema as before, adjusted for clarity
+const authSchema = z.object({
+  username: z.string().min(1, { message: "Username is required" }),
+  password: z.string().min(6, { message: "Password must be at least 6 characters" }),
 });
 
 export default function AuthPage() {
@@ -38,14 +37,12 @@ export default function AuthPage() {
   const [, setLocation] = useLocation();
   const { user, loginMutation, registerMutation } = useAuth();
 
-  // If user is already logged in, redirect to home
   useEffect(() => {
     if (user) {
       setLocation("/");
     }
   }, [user, setLocation]);
 
-  // Auto-animate logo
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoginAnimation(true);
@@ -53,7 +50,6 @@ export default function AuthPage() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Login form
   const loginForm = useForm<z.infer<typeof authSchema>>({
     resolver: zodResolver(authSchema),
     defaultValues: {
@@ -62,7 +58,6 @@ export default function AuthPage() {
     },
   });
 
-  // Register form
   const registerForm = useForm<z.infer<typeof authSchema>>({
     resolver: zodResolver(authSchema),
     defaultValues: {
@@ -71,7 +66,6 @@ export default function AuthPage() {
     },
   });
 
-  // Submit handlers
   const onLoginSubmit = async (values: z.infer<typeof authSchema>) => {
     loginMutation.mutate(values);
   };
@@ -80,7 +74,6 @@ export default function AuthPage() {
     registerMutation.mutate(values);
   };
 
-  // Return early if the user is logged in (after hooks)
   if (user) {
     return null;
   }

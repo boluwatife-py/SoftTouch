@@ -12,7 +12,7 @@ import {
   FaPlay,
   FaInfoCircle,
 } from "react-icons/fa";
-import { toast } from "../hooks/use-toast";
+import { toast } from "../../hooks/use-toast";
 import CodeSnippet from "../components/CodeSnippet";
 import Spinner from "../components/Spinner";
 import {
