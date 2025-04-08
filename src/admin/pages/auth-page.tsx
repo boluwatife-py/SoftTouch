@@ -35,7 +35,7 @@ const authSchema = z.object({
 export default function AuthPage() {
   const [loginAnimation, setLoginAnimation] = useState(false);
   const [, setLocation] = useLocation();
-  const { user, loginMutation, registerMutation } = useAuth();
+  const { user, loginMutation } = useAuth();
 
   useEffect(() => {
     if (user) {
@@ -57,21 +57,9 @@ export default function AuthPage() {
       password: "",
     },
   });
-
-  const registerForm = useForm<z.infer<typeof authSchema>>({
-    resolver: zodResolver(authSchema),
-    defaultValues: {
-      username: "",
-      password: "",
-    },
-  });
-
+  
   const onLoginSubmit = async (values: z.infer<typeof authSchema>) => {
     loginMutation.mutate(values);
-  };
-
-  const onRegisterSubmit = async (values: z.infer<typeof authSchema>) => {
-    registerMutation.mutate(values);
   };
 
   if (user) {
