@@ -29,6 +29,7 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
+  const token = localStorage.getItem("token");
 
   const { data: user, error, isLoading } = useQuery<User | null, Error>({
     queryKey: ["/admin/user"],
@@ -37,12 +38,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (res.status === 401) return null;
       return await res.json();
     },
+    enabled: !!token,
   });
 
   const loginMutation = useMutation({
     mutationFn: async (credentials: LoginData) => {
       const res = await apiRequest("POST", "/admin/login", credentials);
-      if (!res.ok) throw new Error(await res.text());
+      const token = res.headers.get("Authorization")?.split("Bearer ")[1];
+      if (token) {
+        localStorage.setItem("token", token);
+      } else {
+        throw new Error("No token received");
+      }
       return await res.json();
     },
     onSuccess: (user: User) => {
@@ -57,12 +64,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       let title = "Login failed";
       let description = error.message;
 
-      if (errorMessage.includes("username")) {
-        title = "Invalid username";
-        description = "This username doesn't exist.";
-      } else if (errorMessage.includes("password")) {
-        title = "Invalid password";
-        description = "The password is incorrect.";
+      if (errorMessage.includes("username") || errorMessage.includes("password")) {
+        title = "Authentication failed";
+        description = "Incorrect username or password.";
+      } else if (errorMessage.includes("token")) {
+        title = "Login error";
+        description = "Failed to receive authentication token.";
       }
 
       toast({
@@ -73,10 +80,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
   });
 
-  const logoutMutation = useMutation({
+  const logoutMutation = useMutation<void, Error, void>({
     mutationFn: async () => {
-      const res = await apiRequest("POST", "/admin/logout");
-      if (!res.ok) throw new Error(await res.text());
+      await apiRequest("POST", "/admin/logout");
+      localStorage.removeItem("token");
     },
     onSuccess: () => {
       queryClient.setQueryData(["/admin/user"], null);
@@ -101,7 +108,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isLoading,
         error,
         loginMutation,
-        logoutMutation
+        logoutMutation,
       }}
     >
       {children}
