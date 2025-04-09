@@ -1,10 +1,11 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
-const BASE_URL = import.meta.env.VITE_API_URL
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 // Store token in memory and sync with localStorage
 let token: string | null = localStorage.getItem("authToken");
 
+// Utility to throw an error if the response is not OK
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
     const text = (await res.text()) || res.statusText;
@@ -12,12 +13,14 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
+// Generalized API request function
 export async function apiRequest(
   method: string,
   url: string,
-  data?: unknown | undefined,
+  data?: unknown,
+  customHeaders: Record<string, string> = {}
 ): Promise<Response> {
-  const headers: Record<string, string> = {};
+  const headers: Record<string, string> = { ...customHeaders };
   if (data) {
     headers["Content-Type"] = "application/json";
   }
@@ -29,14 +32,14 @@ export async function apiRequest(
     method,
     headers,
     body: data ? JSON.stringify(data) : undefined,
-    credentials: "include", // Keep this if your backend requires cookies alongside JWT
+    credentials: "include", // Keep if your backend uses cookies alongside JWT
   });
 
-  // Handle token from login response
+  // Handle token updates from login/logout responses
   if (url === "/admin/login" && res.headers.get("Authorization")) {
     token = res.headers.get("Authorization")!.split(" ")[1];
     localStorage.setItem("authToken", token);
-  } else if (url === "/admin/logout") {
+  } else if (url === "/admin/logout" && res.ok) {
     token = null;
     localStorage.removeItem("authToken");
   }
@@ -46,42 +49,42 @@ export async function apiRequest(
 }
 
 type UnauthorizedBehavior = "returnNull" | "throw";
-export const getQueryFn: <T>(options: {
+export const getQueryFn = <T>({
+  on401: unauthorizedBehavior,
+}: {
   on401: UnauthorizedBehavior;
-}) => QueryFunction<T> =
-  ({ on401: unauthorizedBehavior }) =>
-  async ({ queryKey }) => {
-    const headers: Record<string, string> = {};
-    if (token) {
-      headers["Authorization"] = `Bearer ${token}`;
+}): QueryFunction<T> => async ({ queryKey }) => {
+  const headers: Record<string, string> = {};
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
+  const res = await fetch(`${BASE_URL}${queryKey[0] as string}`, {
+    headers,
+    credentials: "include", // Keep if needed
+  });
+
+  if (res.status === 401) {
+    token = null; // Clear token on 401
+    localStorage.removeItem("authToken");
+    if (unauthorizedBehavior === "returnNull") {
+      return null as T; // Type assertion to match useQuery<User | null>
     }
+    throw new Error("401: Unauthorized");
+  }
 
-    const res = await fetch(`${BASE_URL}${queryKey[0] as string}`, {
-      headers,
-      credentials: "include", // Keep this if needed
-    });
-
-    if (res.status === 401) {
-      if (unauthorizedBehavior === "returnNull") {
-        token = null; // Clear token on 401
-        localStorage.removeItem("authToken");
-        return null; // Matches /admin/user expectation in useAuth.ts
-      }
-      throw new Error("401: Unauthorized");
-    }
-
-    await throwIfResNotOk(res);
-    return await res.json();
-  };
+  await throwIfResNotOk(res);
+  return await res.json();
+};
 
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      queryFn: getQueryFn({ on401: "returnNull" }), // Use returnNull for /admin/user
+      queryFn: getQueryFn({ on401: "returnNull" }), // Default for /admin/user
       refetchInterval: false,
       refetchOnWindowFocus: false,
-      staleTime: Infinity, // Keep data fresh until explicitly invalidated
-      retry: false, // No retries in production for faster feedback
+      staleTime: Infinity, // Keep data fresh until invalidated
+      retry: false, // No retries for faster feedback
     },
     mutations: {
       retry: false,
