@@ -70,7 +70,7 @@ const EndpointsPage = () => {
   }
 
   const { data, isLoading, isError, refetch } = useQuery<EndpointsResponse>({
-    queryKey: ["/api/admin/endpoints"],
+    queryKey: ["/admin/endpoints"],
     retry: 2
   });
 
@@ -78,12 +78,12 @@ const EndpointsPage = () => {
     mutationFn: (id: string) => enableEndpoint(id),
     onSuccess: (response) => {
       // Update the specific endpoint in the cache instead of refetching all
-      const currentData = queryClient.getQueryData<EndpointsResponse>(["/api/admin/endpoints"]);
+      const currentData = queryClient.getQueryData<EndpointsResponse>(["/admin/endpoints"]);
       if (currentData && currentData.endpoints) {
         const updatedEndpoints = currentData.endpoints.map(endpoint => 
           endpoint.id === response.endpoint.id ? response.endpoint : endpoint
         );
-        queryClient.setQueryData(["/api/admin/endpoints"], {
+        queryClient.setQueryData(["/admin/endpoints"], {
           ...currentData,
           endpoints: updatedEndpoints
         });
@@ -108,12 +108,12 @@ const EndpointsPage = () => {
     mutationFn: (id: string) => disableEndpoint(id),
     onSuccess: (response) => {
       // Update the specific endpoint in the cache instead of refetching all
-      const currentData = queryClient.getQueryData<EndpointsResponse>(["/api/admin/endpoints"]);
+      const currentData = queryClient.getQueryData<EndpointsResponse>(["/admin/endpoints"]);
       if (currentData && currentData.endpoints) {
         const updatedEndpoints = currentData.endpoints.map(endpoint => 
           endpoint.id === response.endpoint.id ? response.endpoint : endpoint
         );
-        queryClient.setQueryData(["/api/admin/endpoints"], {
+        queryClient.setQueryData(["/admin/endpoints"], {
           ...currentData,
           endpoints: updatedEndpoints
         });
@@ -138,12 +138,12 @@ const EndpointsPage = () => {
     mutationFn: (id: string) => showInStats(id),
     onSuccess: (response) => {
       // Update the specific endpoint in the cache instead of refetching all
-      const currentData = queryClient.getQueryData<EndpointsResponse>(["/api/admin/endpoints"]);
+      const currentData = queryClient.getQueryData<EndpointsResponse>(["/admin/endpoints"]);
       if (currentData && currentData.endpoints) {
         const updatedEndpoints = currentData.endpoints.map(endpoint => 
           endpoint.id === response.endpoint.id ? response.endpoint : endpoint
         );
-        queryClient.setQueryData(["/api/admin/endpoints"], {
+        queryClient.setQueryData(["/admin/endpoints"], {
           ...currentData,
           endpoints: updatedEndpoints
         });
@@ -168,12 +168,12 @@ const EndpointsPage = () => {
     mutationFn: (id: string) => hideInStats(id),
     onSuccess: (response) => {
       // Update the specific endpoint in the cache instead of refetching all
-      const currentData = queryClient.getQueryData<EndpointsResponse>(["/api/admin/endpoints"]);
+      const currentData = queryClient.getQueryData<EndpointsResponse>(["/admin/endpoints"]);
       if (currentData && currentData.endpoints) {
         const updatedEndpoints = currentData.endpoints.map(endpoint => 
           endpoint.id === response.endpoint.id ? response.endpoint : endpoint
         );
-        queryClient.setQueryData(["/api/admin/endpoints"], {
+        queryClient.setQueryData(["/admin/endpoints"], {
           ...currentData,
           endpoints: updatedEndpoints
         });
@@ -197,7 +197,7 @@ const EndpointsPage = () => {
   const deleteMutation = useMutation({
     mutationFn: (id: string) => deleteEndpoint(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/endpoints"] });
+      queryClient.invalidateQueries({ queryKey: ["/admin/endpoints"] });
       toast({
         title: "Success",
         description: "Endpoint deleted successfully",
@@ -337,7 +337,7 @@ const EndpointsPage = () => {
                     const enableAll = async () => {
                       try {
                         const result = await enableAllEndpoints();
-                        queryClient.invalidateQueries({ queryKey: ["/api/admin/endpoints"] });
+                        queryClient.invalidateQueries({ queryKey: ["/admin/endpoints"] });
                         toast({
                           title: "Success",
                           description: result.message,
@@ -369,7 +369,7 @@ const EndpointsPage = () => {
                     const disableAll = async () => {
                       try {
                         const result = await disableAllEndpoints();
-                        queryClient.invalidateQueries({ queryKey: ["/api/admin/endpoints"] });
+                        queryClient.invalidateQueries({ queryKey: ["/admin/endpoints"] });
                         toast({
                           title: "Success",
                           description: result.message,
@@ -402,7 +402,7 @@ const EndpointsPage = () => {
                     const showAll = async () => {
                       try {
                         const result = await showAllInStats();
-                        queryClient.invalidateQueries({ queryKey: ["/api/admin/endpoints"] });
+                        queryClient.invalidateQueries({ queryKey: ["/admin/endpoints"] });
                         toast({
                           title: "Success",
                           description: result.message,
@@ -434,7 +434,7 @@ const EndpointsPage = () => {
                     const hideAll = async () => {
                       try {
                         const result = await hideAllFromStats();
-                        queryClient.invalidateQueries({ queryKey: ["/api/admin/endpoints"] });
+                        queryClient.invalidateQueries({ queryKey: ["/admin/endpoints"] });
                         toast({
                           title: "Success",
                           description: result.message,
@@ -681,7 +681,7 @@ const EndpointsPage = () => {
         onClose={() => setIsModalOpen(false)}
         onSuccess={() => {
           setIsModalOpen(false);
-          queryClient.invalidateQueries({ queryKey: ["/api/admin/endpoints"] });
+          queryClient.invalidateQueries({ queryKey: ["/admin/endpoints"] });
         }}
       />
 

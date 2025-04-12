@@ -12,22 +12,58 @@ import { AuthProvider } from "@/hooks/use-auth";
 import { useAuth } from "@/hooks/use-auth";
 import { useEffect } from "react";
 import { useLocation } from "wouter";
+import { Loader2 } from "lucide-react";
 
 function AuthRedirect() {
   const { user, isLoading } = useAuth();
   const [, setLocation] = useLocation();
 
   useEffect(() => {
-    if (!isLoading && user) {
-      setLocation("/admin"); // Redirect authenticated users to /admin
+    if (!isLoading) {
+      if (user) {
+        setLocation("/admin");
+      }
     }
   }, [user, isLoading, setLocation]);
 
   if (isLoading) {
-    return <div>Loading...</div>; // Optional: Add a loading state
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="h-8 w-8 animate-spin text-[#00BFFF]" />
+      </div>
+    );
   }
 
-  return <AuthPage />; // Render AuthPage for unauthenticated users
+  if (!user) {
+    return <AuthPage />;
+  }
+
+  return null; // Prevent rendering anything if redirecting
+}
+
+function RootRedirect() {
+  const { user, isLoading } = useAuth();
+  const [, setLocation] = useLocation();
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (user) {
+        setLocation("/admin"); // Authenticated users go to /admin
+      } else {
+        setLocation("/admin/auth"); // Unauthenticated users go to login
+      }
+    }
+  }, [user, isLoading, setLocation]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="h-8 w-8 animate-spin text-[#00BFFF]" />
+      </div>
+    );
+  }
+
+  return null; // Don't render anything, just redirect
 }
 
 function AdminRouter() {
@@ -35,6 +71,8 @@ function AdminRouter() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <Switch>
+          <Route path="/" component={RootRedirect} /> {/* Handle root path */}
+          <Route path="/admin/auth" component={AuthRedirect} />
           <ProtectedRoute
             path="/admin"
             component={() => (
@@ -51,8 +89,7 @@ function AdminRouter() {
               </Layout>
             )}
           />
-          <Route path="/admin/auth" component={AuthRedirect} /> {/* Use AuthRedirect */}
-          <Route component={NotFound} />
+          <Route component={NotFound} /> {/* Catch-all for undefined routes */}
         </Switch>
         <Toaster />
       </AuthProvider>

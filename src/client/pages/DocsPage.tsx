@@ -80,6 +80,8 @@ export default function DocsPage() {
         };
 
         // Determine parameters to use: passed params or fallback to api.sample_request
+        console.log(api.sample_request);
+        
         const effectiveParams =
           params && Object.keys(params).length > 0
             ? params

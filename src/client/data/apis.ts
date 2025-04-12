@@ -1,4 +1,4 @@
-const endpointUrl: string = import.meta.env.VITE_API_URL + '/endpoints'
+const endpointUrl: string = import.meta.env.VITE_API_URL + '/endpoint'
 
 export interface ApiType {
   name: string;

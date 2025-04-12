@@ -20,9 +20,9 @@ const Sidebar = () => {
   return (
     <aside className="w-full md:w-64 md:fixed md:h-full bg-[#0A1533] border-r border-gray-700 z-10 flex flex-col">
       <div className="p-6">
-        <h1 className="text-2xl font-bold text-white flex items-center">
+        <h1 className="text-2xl font-bold text-white flex items-center whitespace-nowrap">
           <Code className="h-6 w-6 mr-3 text-[#00BFFF]" />
-          <span>Softtouch Admin</span>
+          <span>Softtouch</span>
         </h1>
       </div>
       
