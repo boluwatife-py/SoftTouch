@@ -198,7 +198,7 @@ export default function FaqPage() {
               Contact Us
             </SmoothNavLink>
             
-            <a href="https://discord.gg/softtouch" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-6 py-3 border border-[#00B2FF] text-[#00B2FF] rounded-md font-medium shadow-lg hover:bg-[#00B2FF] hover:text-[#0D1525] transition duration-200 cursor-pointer">
+            <a href="https://discord.gg/wAGzpZXexg" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-6 py-3 border border-[#00B2FF] text-[#00B2FF] rounded-md font-medium shadow-lg hover:bg-[#00B2FF] hover:text-[#0D1525] transition duration-200 cursor-pointer">
               <FaDiscord className="mr-2" />
               Join Discord
             </a>

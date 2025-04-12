@@ -264,7 +264,7 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-medium">Discord</h3>
                     <a
-                      href="https://discord.gg/softtouch"
+                      href="https://discord.gg/wAGzpZXexg"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-300 hover:text-[#00B2FF]"
@@ -378,7 +378,7 @@ export default function ContactPage() {
             </a>
 
             <a
-              href="https://discord.gg/softtouch"
+              href="https://discord.gg/wAGzpZXexg"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-[#1A2332] rounded-lg p-6 text-center transition-all hover:bg-[#242e40] cursor-pointer"

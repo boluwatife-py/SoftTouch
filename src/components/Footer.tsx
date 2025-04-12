@@ -19,7 +19,7 @@ export default function Footer() {
               <a href="https://twitter.com/softtouchApi" target="_blank" rel="noopener noreferrer" className="text-[#00B2FF] hover:text-[#00D4FF] transition duration-150">
                 <FaTwitter size={22} />
               </a>
-              <a href="https://discord.gg/softtouch" target="_blank" rel="noopener noreferrer" className="text-[#00B2FF] hover:text-[#00D4FF] transition duration-150">
+              <a href="https://discord.gg/wAGzpZXexg" target="_blank" rel="noopener noreferrer" className="text-[#00B2FF] hover:text-[#00D4FF] transition duration-150">
                 <FaDiscord size={22} />
               </a>
               <a href="https://youtube.com/@softtouchApi" target="_blank" rel="noopener noreferrer" className="text-[#00B2FF] hover:text-[#00D4FF] transition duration-150">
