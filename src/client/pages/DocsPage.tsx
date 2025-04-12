@@ -58,8 +58,6 @@ export default function DocsPage() {
     fetchApiData();
   }, []);
 
-  // Show all APIs without pagination
-
   // Function to handle example API requests with optional parameters
   const handleExampleRequest = useCallback(
     async (api: ApiType, params?: Record<string, string>) => {
@@ -79,9 +77,6 @@ export default function DocsPage() {
           } as Record<string, string>,
         };
 
-        // Determine parameters to use: passed params or fallback to api.sample_request
-        console.log(api.sample_request);
-        
         const effectiveParams =
           params && Object.keys(params).length > 0
             ? params
@@ -99,7 +94,11 @@ export default function DocsPage() {
             // For POST, PUT, etc., send params as JSON body
             (fetchOptions.headers as Record<string, string>)["Content-Type"] =
               "application/json";
-            fetchOptions.body = JSON.stringify(effectiveParams);
+            if (typeof effectiveParams === "string") {
+              fetchOptions.body = effectiveParams;
+            } else {
+              fetchOptions.body = JSON.stringify(effectiveParams);
+            }
           }
         } else if (
           api.params?.length &&
@@ -122,7 +121,7 @@ export default function DocsPage() {
             url = `${url}?${queryParams.toString()}`;
           }
         }
-        
+
         const response = await fetch(url, fetchOptions);
 
         if (!response.ok) {
@@ -907,7 +906,15 @@ fetch('https://api.softtouch.dev/v1${api.endpoint}?${api.params
                         <div className="max-h-[300px]">
                           <CodeSnippet
                             language="json"
-                            code={JSON.stringify(api.sample_response, null, 2)}
+                            code={
+                              typeof api.sample_response === "string"
+                                ? JSON.stringify(
+                                    JSON.parse(api.sample_response),
+                                    null,
+                                    2
+                                  )
+                                : JSON.stringify(api.sample_response, null, 2)
+                            }
                             title="Response Format"
                           />
                         </div>
@@ -1043,7 +1050,19 @@ fetch('https://api.softtouch.dev/v1${api.endpoint}?${api.params
                               language="json"
                               code={
                                 result
-                                  ? JSON.stringify(result)
+                                  ? (() => {
+                                      try {
+                                        return typeof result === "string"
+                                          ? JSON.stringify(
+                                              JSON.parse(result),
+                                              null,
+                                              2
+                                            )
+                                          : JSON.stringify(result, null, 2);
+                                      } catch (e) {
+                                        return "// Invalid JSON response";
+                                      }
+                                    })()
                                   : "// Send a request to see the response here"
                               }
                             />
@@ -1055,8 +1074,6 @@ fetch('https://api.softtouch.dev/v1${api.endpoint}?${api.params
                 );
               })
             )}
-
-            {/* No pagination */}
           </div>
         </div>
       </div>
