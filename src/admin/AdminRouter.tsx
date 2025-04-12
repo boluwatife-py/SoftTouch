@@ -9,6 +9,26 @@ import StatisticsPage from "./pages/statistics";
 import { ProtectedRoute } from "@/lib/protected-route";
 import AuthPage from "./pages/auth-page";
 import { AuthProvider } from "@/hooks/use-auth";
+import { useAuth } from "@/hooks/use-auth";
+import { useEffect } from "react";
+import { useLocation } from "wouter";
+
+function AuthRedirect() {
+  const { user, isLoading } = useAuth();
+  const [, setLocation] = useLocation();
+
+  useEffect(() => {
+    if (!isLoading && user) {
+      setLocation("/admin"); // Redirect authenticated users to /admin
+    }
+  }, [user, isLoading, setLocation]);
+
+  if (isLoading) {
+    return <div>Loading...</div>; // Optional: Add a loading state
+  }
+
+  return <AuthPage />; // Render AuthPage for unauthenticated users
+}
 
 function AdminRouter() {
   return (
@@ -31,7 +51,7 @@ function AdminRouter() {
               </Layout>
             )}
           />
-          <Route path="/admin/auth" component={AuthPage} />
+          <Route path="/admin/auth" component={AuthRedirect} /> {/* Use AuthRedirect */}
           <Route component={NotFound} />
         </Switch>
         <Toaster />

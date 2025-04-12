@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useLocation } from "wouter"; // Import useLocation for navigation
 
 type User = {
   id: number;
@@ -29,6 +30,7 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
+  const [, setLocation] = useLocation(); // Get setLocation for navigation
   const token = localStorage.getItem("token");
 
   const { data: user, error, isLoading } = useQuery<User | null, Error>({
@@ -45,6 +47,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     mutationFn: async (credentials: LoginData) => {
       const res = await apiRequest("POST", "/admin/login", credentials);
       const token = res.headers.get("Authorization")?.split("Bearer ")[1];
+
       if (token) {
         localStorage.setItem("token", token);
       } else {
@@ -58,6 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         title: "Login successful",
         description: `Welcome, ${user.username}!`,
       });
+      setLocation("/admin"); // Redirect to /admin after successful login
     },
     onError: (error: Error) => {
       const errorMessage = error.message.toLowerCase();
@@ -91,6 +95,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         title: "Logged out",
         description: "You have been successfully logged out.",
       });
+      setLocation("/admin/auth"); // Optional: Redirect to login page after logout
     },
     onError: (error: Error) => {
       toast({
