@@ -191,7 +191,6 @@ export default function ApiPage() {
                   )}
                 </div>
 
-
                 <CommandList className="text-[#D9E1E8] max-h-[350px] overflow-auto">
                   {searchQuery && filteredApis.length === 0 && (
                     <CommandEmpty className="py-8 text-center">
@@ -389,7 +388,13 @@ export default function ApiPage() {
                       </h4>
                       <div className="relative">
                         <pre className="bg-[#0D1525] p-4 rounded-md overflow-auto text-xs text-[#D9E1E8] max-h-60 border border-[#1A2332] font-mono custom-scrollbar">
-                          {JSON.stringify(api.sample_response, null, 2)}
+                          {typeof api.sample_response === "string"
+                            ? JSON.stringify(
+                                JSON.parse(api.sample_response),
+                                null,
+                                2
+                              )
+                            : JSON.stringify(api.sample_response, null, 2)}
                         </pre>
                         <div className="absolute top-2 right-3">
                           <button

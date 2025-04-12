@@ -14,7 +14,6 @@ const Sidebar = () => {
 
   const navItems = [
     { href: "/admin", label: "API Endpoints", icon: <Server className="h-5 w-5 mr-3" /> },
-    { href: "/admin/statistics", label: "Statistics", icon: <BarChart3 className="h-5 w-5 mr-3" /> },
   ];
 
   return (

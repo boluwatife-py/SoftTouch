@@ -5,7 +5,6 @@ import { Toaster } from "@/components/ui/toaster";
 import NotFound from "./pages/not-found";
 import Layout from "@/components/layout/Layout";
 import EndpointsPage from "./pages/endpoints";
-import StatisticsPage from "./pages/statistics";
 import { ProtectedRoute } from "@/lib/protected-route";
 import AuthPage from "./pages/auth-page";
 import { AuthProvider } from "@/hooks/use-auth";
@@ -78,14 +77,6 @@ function AdminRouter() {
             component={() => (
               <Layout>
                 <EndpointsPage />
-              </Layout>
-            )}
-          />
-          <ProtectedRoute
-            path="/admin/statistics"
-            component={() => (
-              <Layout>
-                <StatisticsPage />
               </Layout>
             )}
           />
