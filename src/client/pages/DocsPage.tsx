@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/command";
 
 export default function DocsPage() {
-  const [result, setResult] = useState<any | null>(null);
+  const [results, setResults] = useState<Record<string, any>>({});
   const [activeSection, setActiveSection] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<
@@ -132,7 +132,10 @@ export default function DocsPage() {
         }
 
         const data = await response.json();
-        setResult(data);
+        setResults(prev => ({
+          ...prev,
+          [api.name]: data
+        }));
 
         toast({
           title: "Request successful!",
@@ -161,7 +164,7 @@ export default function DocsPage() {
           variant: "destructive",
           duration: 4000,
         });
-        setResult(null);
+        setResults({});
       }
     },
     []
@@ -1049,16 +1052,16 @@ fetch('https://api.softtouch.dev/v1${api.endpoint}?${api.params
                             <CodeSnippet
                               language="json"
                               code={
-                                result
+                                results[api.name]
                                   ? (() => {
                                       try {
-                                        return typeof result === "string"
+                                        return typeof results[api.name] === "string"
                                           ? JSON.stringify(
-                                              JSON.parse(result),
+                                              JSON.parse(results[api.name]),
                                               null,
                                               2
                                             )
-                                          : JSON.stringify(result, null, 2);
+                                          : JSON.stringify(results[api.name], null, 2);
                                       } catch (e) {
                                         return "// Invalid JSON response";
                                       }

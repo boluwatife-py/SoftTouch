@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { FaBolt, FaLock, FaCode, FaGlobe, FaRocket, FaUserFriends, FaArrowRight } from "react-icons/fa";
+import { FaBolt, FaLock, FaCode, FaGlobe, FaRocket, FaUserFriends, FaArrowRight, FaDatabase, FaCloud, FaShieldAlt, FaTools, FaClock, FaChartLine, FaServer, FaLightbulb, FaCogs } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { apis, ApiType } from "../data/apis";
 import Spinner from "@/components/Spinner";
@@ -7,8 +7,8 @@ import Spinner from "@/components/Spinner";
 export default function HomePage() {
   const [apiData, setApiData] = useState<ApiType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  
-  // Fetch API data
+  const [activeFeature, setActiveFeature] = useState(0);
+
   useEffect(() => {
     const fetchApiData = async () => {
       try {
@@ -21,194 +21,155 @@ export default function HomePage() {
         setIsLoading(false);
       }
     };
-    
+
     fetchApiData();
   }, []);
-  
-  // Use the first 3 APIs for the featured section
+
   const latestApis = apiData.slice(0, 3);
 
   useEffect(() => {
-    // Scroll to top when page loads
     window.scrollTo(0, 0);
+    const interval = setInterval(() => {
+      setActiveFeature((prev) => (prev + 1) % 4);
+    }, 3000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <section className="animate-fadeIn py-16 md:py-24">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="animate-fadeIn py-16 md:py-24 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute w-[500px] h-[500px] rounded-full bg-gradient-to-r from-[#00B2FF]/10 to-[#00D4FF]/10 blur-3xl -top-64 -left-64 animate-pulse"></div>
+        <div className="absolute w-[500px] h-[500px] rounded-full bg-gradient-to-l from-[#00B2FF]/10 to-[#00D4FF]/10 blur-3xl -bottom-64 -right-64 animate-pulse"></div>
+        <div className="absolute w-32 h-32 rounded-full bg-[#00BFFF]/20 blur-3xl top-1/4 left-1/3 animate-blob"></div>
+        <div className="absolute w-32 h-32 rounded-full bg-[#00B2FF]/20 blur-3xl bottom-1/4 right-1/3 animate-blob" style={{animationDelay: '2s'}}></div>
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJncmlkIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiPjxwYXRoIGQ9Ik0gNDAgMCBMIDAgMCAwIDQwIiBmaWxsPSJub25lIiBzdHJva2U9IiMxYTM2OGIiIHN0cm9rZS13aWR0aD0iMC41Ii8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIiAvPjwvc3ZnPg==')] opacity-10"></div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Hero Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-6xl font-bold text-[#00B2FF] mb-6">
-            <span className="inline-block">SoftTouch</span>
-          </h1>
-          <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-            100% free API access for pro features. Build powerful applications without the cost.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <Link href="/apis">
-              <span className="inline-block px-8 py-3 border border-[#00B2FF] bg-[#00B2FF] text-[#0D1525] rounded-md text-lg font-medium shadow-lg hover:bg-transparent hover:text-[#00B2FF] transition duration-300 focus:outline-none focus:ring-2 focus:ring-[#00D4FF] focus:ring-offset-2 focus:ring-offset-[#0D1525] cursor-pointer">
-                Explore APIs
-              </span>
-            </Link>
-            <Link href="/docs">
-              <span className="inline-block px-8 py-3 border border-[#00B2FF] text-[#00B2FF] rounded-md text-lg font-medium shadow-lg hover:bg-[#00B2FF] hover:text-[#0D1525] transition duration-300 focus:outline-none focus:ring-2 focus:ring-[#00D4FF] focus:ring-offset-2 focus:ring-offset-[#0D1525] cursor-pointer">
-                Read the Docs
-              </span>
-            </Link>
+        <div className="text-center mb-16 relative">
+          <div className="relative z-10">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#00B2FF] to-[#00D4FF] animate-slideIn">
+              SoftTouch
+            </h1>
+            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto animate-fadeIn opacity-90 text-[#D9E1E8]">
+              Empower your applications with our enterprise-grade APIs. 
+              Build faster, scale better, and innovate without limits.
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+              <Link href="/apis">
+                <span className="inline-block px-8 py-4 border-2 border-[#00B2FF] bg-[#00B2FF] text-[#0D1525] rounded-md text-lg font-medium shadow-lg hover:bg-transparent hover:text-[#00B2FF] transition-all duration-300 transform hover:scale-105">
+                  Get Started
+                </span>
+              </Link>
+              <Link href="/docs">
+                <span className="inline-block px-8 py-4 border-2 border-[#00B2FF] text-[#00B2FF] rounded-md text-lg font-medium shadow-lg hover:bg-[#00B2FF] hover:text-[#0D1525] transition-all duration-300 transform hover:scale-105">
+                  View Documentation
+                </span>
+              </Link>
+            </div>
           </div>
         </div>
-        
-        {/* Features Section */}
-        <div className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-semibold text-center mb-12">Why choose SoftTouch APIs?</h2>
+
+        {/* Stats Section */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
+          {[
+            { icon: FaServer, value: "99.9%", label: "Uptime" },
+            { icon: FaChartLine, value: "50M+", label: "API Calls" },
+            { icon: FaUserFriends, value: "10K+", label: "Developers" },
+            { icon: FaGlobe, value: "150+", label: "Countries" }
+          ].map((stat, idx) => (
+            <div key={idx} className="bg-[#1A2332]/80 backdrop-blur-sm p-6 rounded-lg text-center transform transition-all duration-300 hover:scale-105">
+              <stat.icon className="text-[#00B2FF] text-3xl mx-auto mb-3" />
+              <div className="text-2xl font-bold text-[#00B2FF] mb-1">{stat.value}</div>
+              <div className="text-[#D9E1E8]">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Features Grid */}
+        <div className="mb-20">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-[#00B2FF]">Why Choose SoftTouch?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-[#1A2332] p-6 rounded-lg shadow-md transform transition duration-300 hover:scale-105">
-              <div className="text-[#00B2FF] text-2xl mb-4">
-                <FaBolt />
+            {[
+              { icon: FaBolt, title: "Lightning Fast", desc: "Sub-100ms response times with global edge deployment" },
+              { icon: FaLock, title: "Bank-Grade Security", desc: "Enterprise-level encryption and security protocols" },
+              { icon: FaCloud, title: "Auto-Scaling", desc: "Seamlessly handle millions of requests per second" },
+              { icon: FaCogs, title: "Easy Integration", desc: "Simple SDK integration with extensive documentation" },
+              { icon: FaLightbulb, title: "Smart Analytics", desc: "Real-time insights and usage monitoring" },
+              { icon: FaShieldAlt, title: "24/7 Support", desc: "Round-the-clock expert technical assistance" }
+            ].map((feature, idx) => (
+              <div 
+                key={idx}
+                className="bg-[#1A2332]/80 backdrop-blur-sm p-8 rounded-lg transform transition-all duration-300 hover:scale-105 hover:bg-[#1A2332]/90"
+              >
+                <feature.icon className="text-[#00B2FF] text-3xl mb-4" />
+                <h3 className="text-xl font-semibold mb-3 text-[#00B2FF]">{feature.title}</h3>
+                <p className="text-[#D9E1E8]">{feature.desc}</p>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Fast & Reliable</h3>
-              <p>Optimized for speed with 99.9% uptime guarantee. Build with confidence knowing your API calls will be processed quickly.</p>
-            </div>
-            <div className="bg-[#1A2332] p-6 rounded-lg shadow-md transform transition duration-300 hover:scale-105">
-              <div className="text-[#00B2FF] text-2xl mb-4">
-                <FaLock />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Secure Access</h3>
-              <p>Industry-standard security protocols and data protection for all your API needs. Your data remains private and secure at all times.</p>
-            </div>
-            <div className="bg-[#1A2332] p-6 rounded-lg shadow-md transform transition duration-300 hover:scale-105">
-              <div className="text-[#00B2FF] text-2xl mb-4">
-                <FaCode />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Developer Friendly</h3>
-              <p>Well-documented endpoints with examples and SDKs for popular languages. Start implementing in minutes, not hours.</p>
-            </div>
+            ))}
           </div>
         </div>
-        
+
         {/* Latest APIs Section */}
-        <div className="mb-16">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-[#00B2FF]">Latest APIs</h2>
+        <div className="mb-20">
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-3xl font-bold text-[#00B2FF]">Latest APIs</h2>
             <Link href="/apis">
-              <span className="inline-flex items-center text-[#00B2FF] hover:text-[#00D4FF] transition-colors cursor-pointer">
-                View all APIs <FaArrowRight className="ml-2" />
+              <span className="inline-flex items-center text-[#00B2FF] hover:text-[#00D4FF] transition-colors group">
+                View all APIs <FaArrowRight className="ml-2 transform group-hover:translate-x-2 transition-transform" />
               </span>
             </Link>
           </div>
-          
+
           {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="bg-[#1A2332] rounded-lg shadow-lg overflow-hidden border border-[#1A2332] h-full p-5">
-                  <div className="flex justify-center items-center h-40">
-                    <Spinner size="md" />
-                  </div>
+                <div key={i} className="bg-[#1A2332]/80 backdrop-blur-sm rounded-lg p-6 h-[200px] flex items-center justify-center">
+                  <Spinner size="md" />
                 </div>
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {latestApis.map((api) => {
-              const apiId = api.name.toLowerCase().replace(/\s+/g, '');
-              return (
-                <Link key={api.name} href={`/docs#${apiId}`}>
-                  <div className="bg-[#1A2332] rounded-lg shadow-lg overflow-hidden border border-[#1A2332] hover:border-[#00B2FF] hover:shadow-[0_0_15px_rgba(0,178,255,0.15)] transition-all duration-300 h-full cursor-pointer group">
-                    <div className="p-5">
-                      <div className="flex justify-between items-center mb-3">
-                        <h3 className="text-lg font-semibold text-[#00B2FF] group-hover:text-[#00D4FF] transition-colors">{api.name}</h3>
-                        <span className={`px-2 py-1 text-xs rounded-full ${
-                          api.method === 'GET' 
-                            ? 'bg-green-900/50 text-green-300 border border-green-700' 
-                            : 'bg-blue-900/50 text-blue-300 border border-blue-700'
-                        }`}>{api.method}</span>
-                      </div>
-                      
-                      <p className="text-sm mb-3 text-[#D9E1E8]/90">{api.part_description}</p>
-                      
-                      <div className="mb-3">
-                        <span className="text-xs text-gray-400">Endpoint:</span>
-                        <code className="block bg-[#0D1525] p-2 mt-1 rounded text-[#00D4FF] overflow-x-auto text-xs font-mono">
-                          {api.endpoint}
-                        </code>
-                      </div>
-                      
-                      <div className="flex justify-end">
-                        <span className="inline-flex items-center mt-2 text-sm text-[#00B2FF] group-hover:text-[#00D4FF] transition-colors">
-                          View documentation <FaArrowRight className="ml-1 transform group-hover:translate-x-1 transition-transform" size={12} />
-                        </span>
-                      </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {latestApis.map((api) => (
+                <Link key={api.name} href={`/docs#${api.name.toLowerCase()}`}>
+                  <div className="bg-[#1A2332]/80 backdrop-blur-sm p-6 rounded-lg border border-transparent hover:border-[#00B2FF] transition-all duration-300 group cursor-pointer">
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-xl font-semibold text-[#00B2FF] group-hover:text-[#00D4FF]">{api.name}</h3>
+                      <span className={`px-3 py-1 text-xs rounded-full ${
+                        api.method === 'GET' 
+                          ? 'bg-green-900/50 text-green-300 border border-green-700' 
+                          : 'bg-blue-900/50 text-blue-300 border border-blue-700'
+                      }`}>{api.method}</span>
                     </div>
+                    <p className="text-[#D9E1E8] mb-4">{api.part_description}</p>
+                    <code className="block bg-[#0D1525] p-3 rounded text-[#00D4FF] text-sm font-mono overflow-x-auto">
+                      {api.endpoint}
+                    </code>
                   </div>
                 </Link>
-              );
-            })}
-          </div>
+              ))}
+            </div>
           )}
         </div>
 
-        {/* Stats Section */}
-        <div className="mb-24 py-12 bg-[#1A2332] rounded-lg shadow-md">
-          <h2 className="text-2xl md:text-3xl font-semibold text-center mb-12">Trusted by Developers</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div>
-              <p className="text-4xl font-bold text-[#00B2FF]">1M+</p>
-              <p className="text-lg mt-2">API Requests Daily</p>
-            </div>
-            <div>
-              <p className="text-4xl font-bold text-[#00B2FF]">20K+</p>
-              <p className="text-lg mt-2">Active Developers</p>
-            </div>
-            <div>
-              <p className="text-4xl font-bold text-[#00B2FF]">99.9%</p>
-              <p className="text-lg mt-2">Uptime Guarantee</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Additional Features */}
-        <div className="mb-24">
-          <h2 className="text-2xl md:text-3xl font-semibold text-center mb-12">More Reasons to Love SoftTouch</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-[#1A2332] p-6 rounded-lg shadow-md transform transition duration-300 hover:scale-105">
-              <div className="text-[#00B2FF] text-2xl mb-4">
-                <FaGlobe />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Global Infrastructure</h3>
-              <p>Strategically located servers across the globe ensure low latency no matter where your users are.</p>
-            </div>
-            <div className="bg-[#1A2332] p-6 rounded-lg shadow-md transform transition duration-300 hover:scale-105">
-              <div className="text-[#00B2FF] text-2xl mb-4">
-                <FaRocket />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Continuous Updates</h3>
-              <p>We're always adding new features and improving existing ones based on community feedback.</p>
-            </div>
-            <div className="bg-[#1A2332] p-6 rounded-lg shadow-md transform transition duration-300 hover:scale-105">
-              <div className="text-[#00B2FF] text-2xl mb-4">
-                <FaUserFriends />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Community Driven</h3>
-              <p>Join our active community of developers to share ideas, get help, and collaborate on projects.</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Call to Action */}
-        <div className="text-center">
-          <h2 className="text-2xl md:text-3xl font-semibold mb-6">Ready to Get Started?</h2>
-          <p className="text-xl mb-8 max-w-3xl mx-auto">
-            Start building with our free APIs today. No credit card required, no hidden fees.
+        {/* CTA Section */}
+        <div className="text-center bg-[#1A2332]/80 backdrop-blur-sm p-12 rounded-lg">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-[#00B2FF]">Ready to Get Started?</h2>
+          <p className="text-xl mb-8 max-w-3xl mx-auto text-[#D9E1E8]">
+            Join thousands of developers building amazing applications with SoftTouch APIs.
           </p>
           <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
             <Link href="/docs">
-              <span className="inline-block px-8 py-3 border border-[#00B2FF] text-[#00B2FF] rounded-md text-lg font-medium hover:bg-[#00B2FF] hover:text-[#0D1525] transition duration-300 cursor-pointer">
-                Read the Docs
+              <span className="inline-block px-8 py-4 border-2 border-[#00B2FF] text-[#00B2FF] rounded-md text-lg font-medium hover:bg-[#00B2FF] hover:text-[#0D1525] transition-all duration-300 transform hover:scale-105">
+                Read Documentation
               </span>
             </Link>
             <Link href="/apis">
-              <span className="inline-block px-8 py-3 border border-[#00B2FF] bg-[#00B2FF] text-[#0D1525] rounded-md text-lg font-medium hover:bg-transparent hover:text-[#00B2FF] transition duration-300 cursor-pointer">
-                Explore APIs
+              <span className="inline-block px-8 py-4 border-2 border-[#00B2FF] bg-[#00B2FF] text-[#0D1525] rounded-md text-lg font-medium hover:bg-transparent hover:text-[#00B2FF] transition-all duration-300 transform hover:scale-105">
+                Start Building
               </span>
             </Link>
           </div>
