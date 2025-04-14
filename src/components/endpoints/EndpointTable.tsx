@@ -130,6 +130,7 @@ const EndpointTable = ({
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
               Enabled
             </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">In Stats</th>
             <th className="px-6 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">
               Actions
             </th>
@@ -219,7 +220,35 @@ const EndpointTable = ({
                   )}
                 </div>
               </td>
-
+              <td className="px-6 py-4 text-sm">
+                <div className="flex items-center space-x-2">
+                  {processingIds[`visibility-${endpoint.id}`] || isProcessing.show || isProcessing.hide ? (
+                    <Loader2 className="w-4 h-4 text-[#00BFFF] animate-spin" />
+                  ) : (
+                    <div className="flex items-center">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div>
+                              <Switch
+                                checked={endpoint.is_visible_in_stats}
+                                onCheckedChange={() => handleToggleVisibility(endpoint)}
+                                className="data-[state=checked]:bg-blue-600 data-[state=unchecked]:bg-gray-500"
+                              />
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{endpoint.is_visible_in_stats ? "Hide from statistics" : "Show in statistics"}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      {endpoint.is_visible_in_stats ? 
+                        <Eye className="ml-2 h-3 w-3 text-blue-400" /> : 
+                        <EyeOff className="ml-2 h-3 w-3 text-gray-400" />}
+                    </div>
+                  )}
+                </div>
+              </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-right">
                 <div className="flex items-center justify-end space-x-2">
                   <TooltipProvider>
