@@ -145,7 +145,7 @@ export default function HomePage() {
                       }`}>{api.method}</span>
                     </div>
                     <p className="text-[#D9E1E8] mb-4">{api.part_description}</p>
-                    <code className="block bg-[#0D1525] p-3 rounded text-[#00D4FF] text-sm font-mono overflow-x-auto">
+                    <code className="block bg-[#0D1525] p-3 rounded text-[#00D4FF] text-sm font-mono overflow-x-auto hidden-scrollbar">
                       {api.endpoint}
                     </code>
                   </div>
