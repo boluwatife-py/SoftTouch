@@ -395,6 +395,71 @@ const EndpointsPage = () => {
                   className="hover:bg-[#213977] cursor-pointer"
                   onClick={() => {
                     toast({
+                      title: "Updating Statistics Visibility",
+                      description: "Making all endpoints visible in statistics...",
+                    });
+                    
+                    const showAll = async () => {
+                      try {
+                        const result = await showAllInStats();
+                        queryClient.invalidateQueries({ queryKey: ["/admin/endpoints"] });
+                        toast({
+                          title: "Success",
+                          description: result.message,
+                          variant: "default",
+                        });
+                      } catch (error) {
+                        toast({
+                          title: "Error",
+                          description: "Failed to update statistics visibility",
+                          variant: "destructive",
+                        });
+                      }
+                    };
+                    
+                    showAll();
+                  }}
+                >
+                  <Eye className="h-4 w-4 mr-2 text-blue-400" />
+                  Show All in Statistics
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  className="hover:bg-[#213977] cursor-pointer"
+                  onClick={() => {
+                    toast({
+                      title: "Updating Statistics Visibility",
+                      description: "Hiding all endpoints from statistics...",
+                    });
+                    
+                    const hideAll = async () => {
+                      try {
+                        const result = await hideAllFromStats();
+                        queryClient.invalidateQueries({ queryKey: ["/admin/endpoints"] });
+                        toast({
+                          title: "Success",
+                          description: result.message,
+                          variant: "default",
+                        });
+                      } catch (error) {
+                        toast({
+                          title: "Error",
+                          description: "Failed to update statistics visibility",
+                          variant: "destructive",
+                        });
+                      }
+                    };
+                    
+                    hideAll();
+                  }}
+                >
+                  <EyeOff className="h-4 w-4 mr-2 text-yellow-400" />
+                  Hide All from Statistics
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className="bg-gray-700" />
+                <DropdownMenuItem 
+                  className="hover:bg-[#213977] cursor-pointer"
+                  onClick={() => {
+                    toast({
                       title: "Security Audit Started",
                       description: "Scanning all endpoints for potential security issues...",
                       variant: "default",
@@ -413,7 +478,6 @@ const EndpointsPage = () => {
                   <ShieldCheck className="h-4 w-4 mr-2" />
                   Security Audit
                 </DropdownMenuItem>
-                <DropdownMenuSeparator className="bg-gray-700" />
                 <DropdownMenuItem 
                   className="hover:bg-[#213977] cursor-pointer"
                   onClick={() => {
