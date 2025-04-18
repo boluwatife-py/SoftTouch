@@ -46,14 +46,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const loginMutation = useMutation({
     mutationFn: async (credentials: LoginData) => {
       const res = await apiRequest("POST", "/admin/login", credentials);
-      const token = res.headers.get("Authorization")?.split("Bearer ")[1];
+      const data = await res.json();
 
-      if (token) {
-        localStorage.setItem("token", token);
+      if (data.token) {
+        localStorage.setItem("token", data.token);
       } else {
         throw new Error("No token received");
       }
-      return await res.json();
+      return { id: data.id, username: data.username };
     },
     onSuccess: (user: User) => {
       queryClient.setQueryData(["/admin/user"], user);
