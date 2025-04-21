@@ -291,7 +291,7 @@ const EndpointForm = ({ isOpen, endpoint, onClose, onSuccess }: EndpointFormProp
                     <div className="md:col-span-3">
                       <Input
                         value={param.type}
-                        onChange={(e) => updateParam(index, 'name', e.target.value)}
+                        onChange={(e) => updateParam(index, 'type', e.target.value)}
                         className="w-full bg-[#0A1533] text-white border-gray-700"
                         placeholder="Type"
                       />
