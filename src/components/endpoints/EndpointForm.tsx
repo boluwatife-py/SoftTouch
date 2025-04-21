@@ -66,7 +66,7 @@ const EndpointForm = ({ isOpen, endpoint, onClose, onSuccess }: EndpointFormProp
       setParams(endpoint.params || []);
     } else {
       reset();
-      setParams([{ name: '', type: 'string', description: '' }]);
+      setParams([{ name: '', type: '', description: '' }]);
     }
   }, [endpoint, setValue, reset]);
 
