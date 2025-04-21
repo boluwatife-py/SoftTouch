@@ -107,7 +107,7 @@ const EndpointForm = ({ isOpen, endpoint, onClose, onSuccess }: EndpointFormProp
   });
 
   const addParam = () => {
-    setParams([...params, { name: '', type: 'string', description: '' }]);
+    setParams([...params, { name: '', type: '', description: '' }]);
   };
 
   const removeParam = (index: number) => {
