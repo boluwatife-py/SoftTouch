@@ -139,7 +139,7 @@ const EndpointForm = ({ isOpen, endpoint, onClose, onSuccess }: EndpointFormProp
 
   const onSubmit = (data: FormValues) => {
     const filteredParams = params.filter(p => p.name.trim() !== '');
-    
+
     try {
       const formattedRequest = validateAndFormatJSON(data.sample_request);
       const formattedResponse = validateAndFormatJSON(data.sample_response);
@@ -191,8 +191,8 @@ const EndpointForm = ({ isOpen, endpoint, onClose, onSuccess }: EndpointFormProp
               </div>
               <div>
                 <Label htmlFor="method" className="text-[#D3D3D3]">Method</Label>
-                <Select 
-                  defaultValue={watch('method')} 
+                <Select
+                  defaultValue={watch('method')}
                   onValueChange={value => setValue('method', value)}
                 >
                   <SelectTrigger className="w-full bg-[#0A1533] text-white border-gray-700">
@@ -219,8 +219,8 @@ const EndpointForm = ({ isOpen, endpoint, onClose, onSuccess }: EndpointFormProp
             </div>
             <div className="mb-4">
               <Label htmlFor="response_type" className="text-[#D3D3D3]">Response Type</Label>
-              <Select 
-                defaultValue={watch('response_type')} 
+              <Select
+                defaultValue={watch('response_type')}
                 onValueChange={value => setValue('response_type', value)}
               >
                 <SelectTrigger className="w-full bg-[#0A1533] text-white border-gray-700">
@@ -289,21 +289,12 @@ const EndpointForm = ({ isOpen, endpoint, onClose, onSuccess }: EndpointFormProp
                       />
                     </div>
                     <div className="md:col-span-3">
-                      <Select 
-                        value={param.type} 
-                        onValueChange={value => updateParam(index, 'type', value)}
-                      >
-                        <SelectTrigger className="w-full bg-[#0A1533] text-white border-gray-700">
-                          <SelectValue placeholder="Type" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-[#0A1533] text-white border-gray-700">
-                          <SelectItem value="string">String</SelectItem>
-                          <SelectItem value="number">Number</SelectItem>
-                          <SelectItem value="boolean">Boolean</SelectItem>
-                          <SelectItem value="object">Object</SelectItem>
-                          <SelectItem value="array">Array</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Input
+                        value={param.type}
+                        onChange={(e) => updateParam(index, 'name', e.target.value)}
+                        className="w-full bg-[#0A1533] text-white border-gray-700"
+                        placeholder="Name"
+                      />
                     </div>
                     <div className="md:col-span-4">
                       <Input
@@ -314,9 +305,9 @@ const EndpointForm = ({ isOpen, endpoint, onClose, onSuccess }: EndpointFormProp
                       />
                     </div>
                     <div className="md:col-span-1">
-                      <Button 
-                        type="button" 
-                        variant="destructive" 
+                      <Button
+                        type="button"
+                        variant="destructive"
                         size="sm"
                         onClick={() => removeParam(index)}
                         disabled={params.length === 1}
