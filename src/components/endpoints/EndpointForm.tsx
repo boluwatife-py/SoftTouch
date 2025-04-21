@@ -184,7 +184,7 @@ const EndpointForm = ({ isOpen, endpoint, onClose, onSuccess }: EndpointFormProp
                 <Input
                   id="name"
                   className="w-full bg-[#0A1533] text-white border-gray-700"
-                  placeholder="E.g. Text Analyzer"
+                  placeholder="API name"
                   {...register('name', { required: 'Name is required' })}
                 />
                 {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
@@ -212,7 +212,7 @@ const EndpointForm = ({ isOpen, endpoint, onClose, onSuccess }: EndpointFormProp
               <Input
                 id="endpoint"
                 className="w-full bg-[#0A1533] text-white border-gray-700"
-                placeholder="E.g. /api/text/analyze"
+                placeholder="API path"
                 {...register('endpoint', { required: 'Endpoint path is required' })}
               />
               {errors.endpoint && <p className="text-red-500 text-sm mt-1">{errors.endpoint.message}</p>}
@@ -250,7 +250,7 @@ const EndpointForm = ({ isOpen, endpoint, onClose, onSuccess }: EndpointFormProp
                 id="description"
                 rows={3}
                 className="w-full bg-[#0A1533] text-white border-gray-700"
-                placeholder="Detailed description of the endpoint"
+                placeholder="Description"
                 {...register('description', { required: 'Description is required' })}
               />
               {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
@@ -261,7 +261,7 @@ const EndpointForm = ({ isOpen, endpoint, onClose, onSuccess }: EndpointFormProp
                 id="sample_request"
                 rows={4}
                 className="w-full bg-[#0A1533] text-white border-gray-700 font-mono text-sm whitespace-pre"
-                placeholder='E.g. {\n  "text": "Sample input"\n}'
+                placeholder='Sample Request'
                 {...register('sample_request')}
               />
             </div>
@@ -271,7 +271,7 @@ const EndpointForm = ({ isOpen, endpoint, onClose, onSuccess }: EndpointFormProp
                 id="sample_response"
                 rows={4}
                 className="w-full bg-[#0A1533] text-white border-gray-700 font-mono text-sm whitespace-pre"
-                placeholder='E.g. {\n  "result": "Processed output"\n}'
+                placeholder='Sample Response'
                 {...register('sample_response')}
               />
             </div>
@@ -293,7 +293,7 @@ const EndpointForm = ({ isOpen, endpoint, onClose, onSuccess }: EndpointFormProp
                         value={param.type}
                         onChange={(e) => updateParam(index, 'name', e.target.value)}
                         className="w-full bg-[#0A1533] text-white border-gray-700"
-                        placeholder="Name"
+                        placeholder="Type"
                       />
                     </div>
                     <div className="md:col-span-4">
