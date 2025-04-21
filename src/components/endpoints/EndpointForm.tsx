@@ -39,9 +39,9 @@ const EndpointForm = ({ isOpen, endpoint, onClose, onSuccess }: EndpointFormProp
   const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<FormValues>({
     defaultValues: {
       name: '',
-      method: 'GET',
+      method: '',
       endpoint: '',
-      response_type: 'JSON',
+      response_type: '',
       part_description: '',
       description: '',
       enabled: true,
@@ -195,8 +195,8 @@ const EndpointForm = ({ isOpen, endpoint, onClose, onSuccess }: EndpointFormProp
                   defaultValue={watch('method')}
                   onValueChange={value => setValue('method', value)}
                 >
-                  <SelectTrigger className="w-full bg-[#0A1533] text-white border-gray-700">
-                    <SelectValue placeholder="Select method" />
+                  <SelectTrigger className="w-full bg-[#0A1533] text-white border-gray-700 placeholder:text-gray-500">
+                    <SelectValue placeholder={<span className="text-gray-500">Select method</span>} />
                   </SelectTrigger>
                   <SelectContent className="bg-[#0A1533] text-white border-gray-700">
                     <SelectItem value="GET">GET</SelectItem>
@@ -223,8 +223,8 @@ const EndpointForm = ({ isOpen, endpoint, onClose, onSuccess }: EndpointFormProp
                 defaultValue={watch('response_type')}
                 onValueChange={value => setValue('response_type', value)}
               >
-                <SelectTrigger className="w-full bg-[#0A1533] text-white border-gray-700">
-                  <SelectValue placeholder="Select response type" />
+                <SelectTrigger className="w-full bg-[#0A1533] text-white border-gray-700 placeholder:text-gray-500">
+                  <SelectValue placeholder={<span className="text-gray-500">Select response type</span>} />
                 </SelectTrigger>
                 <SelectContent className="bg-[#0A1533] text-white border-gray-700">
                   <SelectItem value="JSON">JSON</SelectItem>
