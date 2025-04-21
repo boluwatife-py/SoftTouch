@@ -39,9 +39,9 @@ const EndpointForm = ({ isOpen, endpoint, onClose, onSuccess }: EndpointFormProp
   const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<FormValues>({
     defaultValues: {
       name: '',
-      method: '',
+      method: 'GET',
       endpoint: '',
-      response_type: '',
+      response_type: 'JSON',
       part_description: '',
       description: '',
       enabled: true,
@@ -231,6 +231,7 @@ const EndpointForm = ({ isOpen, endpoint, onClose, onSuccess }: EndpointFormProp
                   <SelectItem value="XML">XML</SelectItem>
                   <SelectItem value="TEXT">TEXT</SelectItem>
                   <SelectItem value="HTML">HTML</SelectItem>
+                  <SelectItem value="FILE">FILE</SelectItem>
                 </SelectContent>
               </Select>
             </div>
