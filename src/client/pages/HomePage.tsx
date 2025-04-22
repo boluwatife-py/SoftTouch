@@ -70,35 +70,35 @@ export default function HomePage() {
   // Tool tabs content
   const toolTabs = [
     {
-      id: 'editor',
-      label: 'Code Editor',
+      id: 'playground',
+      label: 'API Playground',
       content: (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div>
-            <h3 className="text-xl font-semibold mb-4 text-primary">Intelligent Code Editor</h3>
-            <p className="text-gray-400 mb-4">Our advanced code editor comes with syntax highlighting, autocompletion, and real-time error checking to boost your productivity.</p>
+            <h3 className="text-xl font-semibold mb-4 text-primary">API Playground</h3>
+            <p className="text-gray-400 mb-4">Test our Language Detection API in real-time with a simple, browser-based interface. No setup required, accessible to all developers.</p>
             <ul className="space-y-3 mb-6">
               <li className="flex items-start">
                 <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center mt-1">
                   <FaCheck className="text-green-500 text-xs" />
                 </div>
-                <span className="ml-2 text-gray-300">Real-time collaboration with your team</span>
+                <span className="ml-2 text-gray-300">Instant API testing</span>
               </li>
               <li className="flex items-start">
                 <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center mt-1">
                   <FaCheck className="text-green-500 text-xs" />
                 </div>
-                <span className="ml-2 text-gray-300">Smart API endpoint suggestions</span>
+                <span className="ml-2 text-gray-300">No authentication needed</span>
               </li>
               <li className="flex items-start">
                 <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center mt-1">
                   <FaCheck className="text-green-500 text-xs" />
                 </div>
-                <span className="ml-2 text-gray-300">Version control integration</span>
+                <span className="ml-2 text-gray-300">Clear response preview</span>
               </li>
             </ul>
-            <Link href="/tools/editor" className="inline-flex items-center text-primary hover:text-primary-light">
-              Learn more <FaArrowRight className="ml-2 text-xs" />
+            <Link href="/tools/playground" className="inline-flex items-center text-primary hover:text-primary-light">
+              Try the Playground <FaArrowRight className="ml-2 text-xs" />
             </Link>
           </div>
           <div className="flex justify-center items-center">
@@ -109,28 +109,36 @@ export default function HomePage() {
                   <div className="code-dot bg-yellow-500 w-3 h-3 rounded-full mr-1.5"></div>
                   <div className="code-dot bg-green-500 w-3 h-3 rounded-full"></div>
                 </div>
-                <div className="text-xs text-gray-400">app.js</div>
+                <div className="text-xs text-gray-400">playground.js</div>
               </div>
               <div className="p-4 text-sm font-mono text-gray-300 overflow-x-auto bg-[#0D1525]">
                 <pre className="language-javascript">
-                  {`import { SoftTouchAPI } from 'softtouch-sdk';
-
-// Initialize the API client
-const api = new SoftTouchAPI({
-  apiKey: process.env.API_KEY,
-  endpoint: 'https://api.softtouch.dev/v1'
-});
-
-// Fetch data from the API
-async function fetchUserData(userId) {
-  try {
-    const response = await api.users.getById(userId);
-    return response.data;
-  } catch (error) {
-    console.error('API Error:', error);
-    return null;
+                  {`// Detect language using Fetch API
+  async function detectLanguage(text) {
+    try {
+      const response = await fetch('https://softtouch.onrender.com/api/v1/translate/detect', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text })
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const data = await response.json();
+      console.log('Detected language:', data);
+      return data;
+    } catch (error) {
+      console.error('Error detecting language:', error);
+    }
   }
-}`}
+  
+  // Example usage
+  detectLanguage('Hello, world!');
+  `}
                 </pre>
               </div>
             </div>
@@ -139,62 +147,64 @@ async function fetchUserData(userId) {
       )
     },
     {
-      id: 'console',
-      label: 'API Console',
+      id: 'docs',
+      label: 'Documentation Hub',
       content: (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div>
-            <h3 className="text-xl font-semibold mb-4 text-primary">Interactive API Console</h3>
-            <p className="text-gray-400 mb-4">Test your API endpoints in real-time with our interactive console. No additional tools required.</p>
+            <h3 className="text-xl font-semibold mb-4 text-primary">Documentation Hub</h3>
+            <p className="text-gray-400 mb-4">Access clear, comprehensive guides and tutorials to get started with our APIs, contributed by our team and community.</p>
             <ul className="space-y-3 mb-6">
               <li className="flex items-start">
                 <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center mt-1">
                   <FaCheck className="text-green-500 text-xs" />
                 </div>
-                <span className="ml-2 text-gray-300">Interactive request builder</span>
+                <span className="ml-2 text-gray-300">Step-by-step tutorials</span>
               </li>
               <li className="flex items-start">
                 <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center mt-1">
                   <FaCheck className="text-green-500 text-xs" />
                 </div>
-                <span className="ml-2 text-gray-300">Response visualization</span>
+                <span className="ml-2 text-gray-300">Community-contributed examples</span>
               </li>
               <li className="flex items-start">
                 <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center mt-1">
                   <FaCheck className="text-green-500 text-xs" />
                 </div>
-                <span className="ml-2 text-gray-300">Request history and sharing</span>
+                <span className="ml-2 text-gray-300">Regularly updated guides</span>
               </li>
             </ul>
-            <Link href="/tools/console" className="inline-flex items-center text-primary hover:text-primary-light">
-              Explore API Console <FaArrowRight className="ml-2 text-xs" />
+            <Link href="/docs" className="inline-flex items-center text-primary hover:text-primary-light">
+              Explore Documentation <FaArrowRight className="ml-2 text-xs" />
             </Link>
           </div>
           <div className="flex justify-center items-center">
             <div className="w-full aspect-video rounded-lg overflow-hidden border border-gray-700 shadow-2xl">
               <div className="w-full h-full bg-gradient-to-br from-[#1A2332] to-[#0D1525] p-4 flex flex-col">
                 <div className="flex justify-between items-center mb-4 border-b border-gray-700 pb-3">
-                  <div className="flex items-center">
-                    <div className="px-3 py-1 rounded-md bg-green-900/50 text-green-300 border border-green-700 text-xs mr-2">GET</div>
-                    <span className="text-gray-300 text-sm">/api/v1/users/profile</span>
-                  </div>
-                  <button className="bg-primary text-dark rounded px-3 py-1 text-xs font-medium">Send</button>
+                  <span className="text-gray-300 text-sm">Language Detection API</span>
+                  <span className="text-xs text-gray-400">v1.0</span>
                 </div>
                 <div className="flex-1 bg-[#0D1525] rounded-md p-3 font-mono text-xs text-gray-300 overflow-auto">
-                  {`{
-  "data": {
-    "id": "user_123456",
-    "name": "John Smith",
-    "email": "john@example.com",
-    "role": "admin",
-    "created_at": "2023-05-15T10:30:00Z",
-    "settings": {
-      "notifications": true,
-      "theme": "dark"
-    }
-  },
-  "status": "success"
-}`}
+                  {`# Language Detection API
+  Detects the language of provided text with high accuracy.
+  
+  ## Endpoint
+  POST https://softtouch.onrender.com/api/v1/translate/detect
+  
+  ## Parameters
+  - **text** (string): The text to analyze.
+  
+  ## Example Request
+  {
+    "text": "Hello, world!"
+  }
+  
+  ## Example Response
+  {
+    "language": "en",
+    "confidence": 0.99
+  }`}
                 </div>
               </div>
             </div>
@@ -203,147 +213,56 @@ async function fetchUserData(userId) {
       )
     },
     {
-      id: 'monitoring',
-      label: 'Monitoring',
+      id: 'forum',
+      label: 'Community Forum',
       content: (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div>
-            <h3 className="text-xl font-semibold mb-4 text-primary">Real-time Monitoring</h3>
-            <p className="text-gray-400 mb-4">Monitor your API usage, performance metrics, and system health from a single dashboard.</p>
+            <h3 className="text-xl font-semibold mb-4 text-primary">Community Forum</h3>
+            <p className="text-gray-400 mb-4">Join our vibrant developer community to share ideas, ask questions, and collaborate on projects.</p>
             <ul className="space-y-3 mb-6">
               <li className="flex items-start">
                 <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center mt-1">
                   <FaCheck className="text-green-500 text-xs" />
                 </div>
-                <span className="ml-2 text-gray-300">Live request visualization</span>
+                <span className="ml-2 text-gray-300">Active discussion threads</span>
               </li>
               <li className="flex items-start">
                 <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center mt-1">
                   <FaCheck className="text-green-500 text-xs" />
                 </div>
-                <span className="ml-2 text-gray-300">Customizable alert thresholds</span>
+                <span className="ml-2 text-gray-300">Expert Q&A sessions</span>
               </li>
               <li className="flex items-start">
                 <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center mt-1">
                   <FaCheck className="text-green-500 text-xs" />
                 </div>
-                <span className="ml-2 text-gray-300">Performance optimization suggestions</span>
+                <span className="ml-2 text-gray-300">Open-source project showcases</span>
               </li>
             </ul>
-            <Link href="/tools/monitoring" className="inline-flex items-center text-primary hover:text-primary-light">
-              View Dashboard <FaArrowRight className="ml-2 text-xs" />
-            </Link>
-          </div>
-          <div className="flex justify-center items-center">
-            <div className="w-full aspect-video rounded-lg overflow-hidden border border-gray-700 shadow-2xl bg-[#1A2332]">
-              <div className="w-full h-full p-4">
-                <div className="grid grid-cols-2 gap-3 mb-3">
-                  <div className="bg-[#0D1525] rounded-md p-3 flex flex-col">
-                    <span className="text-xs text-gray-400 mb-1">API Requests</span>
-                    <span className="text-2xl font-bold text-primary">2.4M</span>
-                    <div className="flex items-center mt-1">
-                      <FaArrowRight className="text-green-400 transform rotate-45 text-xs" />
-                      <span className="text-xs text-green-400 ml-1">+12.5%</span>
-                    </div>
-                  </div>
-                  <div className="bg-[#0D1525] rounded-md p-3 flex flex-col">
-                    <span className="text-xs text-gray-400 mb-1">Avg. Response Time</span>
-                    <span className="text-2xl font-bold text-primary">42ms</span>
-                    <div className="flex items-center mt-1">
-                      <FaArrowRight className="text-green-400 transform -rotate-45 text-xs" />
-                      <span className="text-xs text-green-400 ml-1">-8.3%</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-[#0D1525] rounded-md p-3 h-3/5 flex flex-col">
-                  <div className="flex justify-between items-center mb-3">
-                    <span className="text-xs text-gray-400">Hourly Traffic</span>
-                    <div className="flex space-x-2">
-                      <div className="flex items-center">
-                        <div className="w-2 h-2 bg-primary rounded-full mr-1"></div>
-                        <span className="text-xs text-gray-400">Requests</span>
-                      </div>
-                      <div className="flex items-center">
-                        <div className="w-2 h-2 bg-green-400 rounded-full mr-1"></div>
-                        <span className="text-xs text-gray-400">Response Time</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex-1 flex items-end">
-                    {/* Simulated chart bars */}
-                    {Array.from({ length: 12 }).map((_, i) => (
-                      <div key={i} className="flex-1 flex flex-col items-center justify-end">
-                        <div
-                          className="w-full max-w-[8px] bg-primary rounded-t-sm mx-auto"
-                          style={{ height: `${Math.random() * 60 + 20}%` }}
-                        ></div>
-                        <div className="text-[8px] text-gray-500 mt-1">
-                          {i + 1}h
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: 'auth',
-      label: 'Authentication',
-      content: (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div>
-            <h3 className="text-xl font-semibold mb-4 text-primary">Secure Authentication</h3>
-            <p className="text-gray-400 mb-4">Implement robust authentication with just a few lines of code. Support for OAuth, JWT, and API keys.</p>
-            <ul className="space-y-3 mb-6">
-              <li className="flex items-start">
-                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center mt-1">
-                  <FaCheck className="text-green-500 text-xs" />
-                </div>
-                <span className="ml-2 text-gray-300">Multi-factor authentication</span>
-              </li>
-              <li className="flex items-start">
-                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center mt-1">
-                  <FaCheck className="text-green-500 text-xs" />
-                </div>
-                <span className="ml-2 text-gray-300">Fine-grained access control</span>
-              </li>
-              <li className="flex items-start">
-                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center mt-1">
-                  <FaCheck className="text-green-500 text-xs" />
-                </div>
-                <span className="ml-2 text-gray-300">One-click SSO integration</span>
-              </li>
-            </ul>
-            <Link href="/tools/security" className="inline-flex items-center text-primary hover:text-primary-light">
-              Security Documentation <FaArrowRight className="ml-2 text-xs" />
+            <Link href="/community/forum" className="inline-flex items-center text-primary hover:text-primary-light">
+              Join the Community <FaArrowRight className="ml-2 text-xs" />
             </Link>
           </div>
           <div className="flex justify-center items-center">
             <div className="w-full aspect-video rounded-lg overflow-hidden border border-gray-700 shadow-2xl">
-              <div className="w-full h-full bg-gradient-to-br from-[#1A2332] to-[#0D1525] flex flex-col justify-center items-center p-4">
-                <div className="w-full max-w-sm p-4 bg-[#0D1525] rounded-lg border border-gray-700">
-                  <div className="mb-4 flex justify-center">
-                    <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-                      <FaLock className="text-primary text-xl" />
-                    </div>
+              <div className="w-full h-full bg-gradient-to-br from-[#1A2332] to-[#0D1525] p-4 flex flex-col">
+                <div className="flex justify-between items-center mb-4 border-b border-gray-700 pb-3">
+                  <span className="text-gray-300 text-sm">Community Forum</span>
+                  <span className="text-xs text-gray-400">Recent Posts</span>
+                </div>
+                <div className="flex-1 bg-[#0D1525] rounded-md p-3 text-sm text-gray-300 overflow-auto space-y-3">
+                  <div className="border-b border-gray-700 pb-2">
+                    <div className="text-gray-200 font-semibold">How to integrate Language Detection API?</div>
+                    <div className="text-xs text-gray-400">Posted by JaneDoe • 2h ago</div>
                   </div>
-                  <h3 className="text-center text-lg font-semibold text-gray-200 mb-4">Secure Login</h3>
-                  <div className="space-y-3">
-                    <div className="bg-[#1A2332] rounded border border-gray-700 p-2.5 text-sm">
-                      <div className="text-xs text-gray-400 mb-1">Username</div>
-                      <div className="text-gray-300">johndoe@example.com</div>
-                    </div>
-                    <div className="bg-[#1A2332] rounded border border-gray-700 p-2.5 text-sm">
-                      <div className="text-xs text-gray-400 mb-1">Password</div>
-                      <div className="text-gray-300">••••••••••••</div>
-                    </div>
-                    <button className="w-full bg-primary text-dark py-2.5 rounded-md font-medium">
-                      Authenticate
-                    </button>
+                  <div className="border-b border-gray-700 pb-2">
+                    <div className="text-gray-200 font-semibold">Tips for optimizing API calls</div>
+                    <div className="text-xs text-gray-400">Posted by DevGuru • 1d ago</div>
+                  </div>
+                  <div>
+                    <div className="text-gray-200 font-semibold">Join our open-source project!</div>
+                    <div className="text-xs text-gray-400">Posted by CodeMaster • 3d ago</div>
                   </div>
                 </div>
               </div>
@@ -862,10 +781,9 @@ async function fetchUserData() {
             >
               <TabPanel
                 tabs={[
-                  { id: 'editor', label: 'Code Editor' },
-                  { id: 'console', label: 'API Console' },
-                  { id: 'monitoring', label: 'Monitoring' },
-                  { id: 'auth', label: 'Authentication' }
+                  { id: 'playground', label: 'API Playground' },
+                  { id: 'docs', label: 'Documentation Hub' },
+                  { id: 'forum', label: 'Community Forum' }
                 ]}
                 activeTab={activeDeveloperTool}
                 setActiveTab={setActiveDeveloperTool}
