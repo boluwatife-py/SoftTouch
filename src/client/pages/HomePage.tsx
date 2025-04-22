@@ -668,27 +668,32 @@ detectLanguage('Hello, world!');
               </div>
               <div className="p-4">
                 <pre className="font-mono text-sm text-[#00D4FF] overflow-x-auto">
-                  {`// Initialize the SoftTouch SDK
-const softtouch = new SoftTouch({
-  apiKey: 'YOUR_API_KEY',
-  environment: 'production'
-});
-
-// Use the Data API to fetch records
-async function fetchUserData() {
+                  {`// Detect language using the Fetch API
+async function detectLanguage(text) {
   try {
-    const response = await softtouch.data.query({
-      collection: 'users',
-      where: { active: true },
-      limit: 10
+    const response = await fetch('https://softtouch.onrender.com/api/v1/translate/detect', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text })
     });
-    
-    console.log(\`Found \${response.count} active users\`);
-    return response.data;
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+    console.log(\`Detected language: \${data.language} (Confidence: \${data.confidence})\`);
+    return data;
   } catch (error) {
-    console.error('Error fetching data:', error.message);
+    console.error('Error detecting language:', error.message);
   }
-}`}
+}
+
+// Example usage
+detectLanguage('Hello, world!');
+`}
                 </pre>
               </div>
             </motion.div>
@@ -777,7 +782,7 @@ async function fetchUserData() {
             {/* Feature Tabs */}
             <motion.div
               variants={fadeIn}
-              className="bg-[#1A2332]/50 rounded-xl p-4 sm:p-6 md:p-8 border border-gray-800"
+              className="bg-[#1A2332]/50 rounded-xl p-4 sm:p-6 md:p-8 border border-gray-800 hidden-scrollbar"
             >
               <TabPanel
                 tabs={[
