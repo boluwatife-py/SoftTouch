@@ -356,104 +356,117 @@ async function fetchUserData(userId) {
 
   // Code examples by language
   const codeExamples = {
-    javascript: `// Initialize the SDK
-import { SoftTouch } from 'softtouch-sdk';
-
-const client = new SoftTouch({
-  apiKey: 'YOUR_API_KEY'
-});
-
-// Make API requests
-async function getUserData() {
+    javascript: `// Detect language using Fetch API
+async function detectLanguage(text) {
   try {
-    const response = await client.users.getProfile();
-    console.log('User profile:', response);
-    return response;
+    const response = await fetch('https://softtouch.onrender.com/api/v1/translate/detect', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text })
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+    console.log('Detected language:', data);
+    return data;
   } catch (error) {
-    console.error('Error fetching user data:', error);
+    console.error('Error detecting language:', error);
   }
 }
 
-// Call analytics API
-client.analytics.trackEvent({
-  event: 'page_view',
-  properties: {
-    page: 'home',
-    referrer: document.referrer
-  }
-});`,
-    python: `# Initialize the SDK
-from softtouch import SoftTouch
+// Example usage
+detectLanguage('Hello, world!');
+`,
+    python: `# Detect language using requests
+import requests
 
-client = SoftTouch(api_key='YOUR_API_KEY')
-
-# Make API requests
-def get_user_data():
+def detect_language(text):
     try:
-        response = client.users.get_profile()
-        print('User profile:', response)
-        return response
-    except Exception as error:
-        print('Error fetching user data:', error)
+        response = requests.post(
+            'https://softtouch.onrender.com/api/v1/translate/detect',
+            headers={'Content-Type': 'application/json'},
+            json={'text': text}
+        )
+        response.raise_for_status()  # Raises an HTTPError for bad responses
+        data = response.json()
+        print('Detected language:', data)
+        return data
+    except requests.RequestException as error:
+        print('Error detecting language:', error)
 
-# Call analytics API
-client.analytics.track_event(
-    event='page_view',
-    properties={
-        'page': 'home',
-        'referrer': request.referrer
-    }
-)`,
-    ruby: `# Initialize the SDK
-require 'softtouch'
+# Example usage
+detect_language('Hello, world!')
+`,
+    ruby: `# Detect language using Net::HTTP
+require 'net/http'
+require 'json'
 
-client = SoftTouch::Client.new(api_key: 'YOUR_API_KEY')
+def detect_language(text)
+  uri = URI('https://softtouch.onrender.com/api/v1/translate/detect')
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = true
 
-# Make API requests
-def get_user_data
+  request = Net::HTTP::Post.new(uri.path, 'Content-Type' => 'application/json')
+  request.body = { text: text }.to_json
+
   begin
-    response = client.users.get_profile
-    puts "User profile: #{response}"
-    return response
-  rescue {'=>'} error
-    puts "Error fetching user data: #{error}"
+    response = http.request(request)
+    if response.is_a?(Net::HTTPSuccess)
+      data = JSON.parse(response.body)
+      puts "Detected language: #{data}"
+      return data
+    else
+      puts "Error detecting language: #{response.code} #{response.message}"
+    end
+  rescue StandardError => error
+    puts "Error detecting language: #{error}"
   end
 end
 
-# Call analytics API
-client.analytics.track_event(
-  event: 'page_view',
-  properties: {
-    page: 'home',
-    referrer: request.referrer
-  }
-)`,
+# Example usage
+detect_language('Hello, world!')
+`,
     php: `<?php
-// Initialize the SDK
-require_once 'vendor/autoload.php';
+// Detect language using cURL
+function detectLanguage($text) {
+    $url = 'https://softtouch.onrender.com/api/v1/translate/detect';
+    $data = json_encode(['text' => $text]);
 
-$client = new SoftTouch\Client(['api_key' => 'YOUR_API_KEY']);
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 
-// Make API requests
-function getUserData() {
-  try {
-    $response = $client->users->getProfile();
-    echo 'User profile: ' . json_encode($response);
-    return $response;
-  } catch (Exception $error) {
-    echo 'Error fetching user data: ' . $error->getMessage();
-  }
+    $response = curl_exec($ch);
+    if ($response === false) {
+        echo 'Error detecting language: ' . curl_error($ch);
+        curl_close($ch);
+        return;
+    }
+
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($httpCode >= 200 && $httpCode < 300) {
+        $data = json_decode($response, true);
+        echo 'Detected language: ' . json_encode($data);
+        return $data;
+    } else {
+        echo 'Error detecting language: HTTP ' . $httpCode;
+    }
 }
 
-// Call analytics API
-$client->analytics->trackEvent([
-  'event' => 'page_view',
-  'properties' => [
-    'page' => 'home',
-    'referrer' => $_SERVER['HTTP_REFERER'] ?? null
-  ]
-]);
-?>`
+// Example usage
+detectLanguage('Hello, world!');
+?>
+`
   };
 
   // Documentation cards
