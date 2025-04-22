@@ -15,7 +15,7 @@ interface TabPanelProps {
 const TabPanel: React.FC<TabPanelProps> = ({ tabs, activeTab, setActiveTab, content }) => {
   return (
     <div>
-      <div className="flex flex-wrap mb-6 gap-2">
+      <div className="flex flex-wrap mb-6 gap-2 hidden-scrollbar">
         {tabs.map((tab, index) => (
           <button
             key={tab.id}
