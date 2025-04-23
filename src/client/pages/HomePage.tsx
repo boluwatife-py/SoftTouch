@@ -675,7 +675,6 @@ detectLanguage('Hello, world!');
                 className="bg-[#1A2332]/80 backdrop-blur-sm p-2 sm:p-3 md:p-4 rounded-lg text-center transform transition-all duration-300 border border-gray-800 hover:border-[#00B2FF]/30"
               >
                 <stat.icon className="text-[#00B2FF] text-lg sm:text-xl md:text-2xl mx-auto mb-1" />
-                <stat.icon className="text-[#00B2FF] text-xl sm:text-2xl md:text-3xl mx-auto mb-1 sm:mb-2 md:mb-3" />
                 <div className="text-lg sm:text-xl md:text-2xl font-bold text-[#00B2FF] mb-1">{stat.value}</div>
                 <div className="text-gray-400 text-xs sm:text-sm md:text-base">{stat.label}</div>
               </motion.div>
