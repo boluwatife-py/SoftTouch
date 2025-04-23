@@ -54,7 +54,7 @@ export default function JoinPage() {
                 <p className="text-xs sm:text-sm md:text-base">Watch tutorials and stay updated with our latest features</p>
               </a>
               
-              <a href="https://discord.gg/softtouch" target="_blank" rel="noopener noreferrer" className="bg-[#1A2332] rounded-lg shadow-lg p-4 sm:p-6 md:p-8 text-center transition duration-300 transform hover:scale-105">
+              <a href="https://discord.gg/wAGzpZXexg" target="_blank" rel="noopener noreferrer" className="bg-[#1A2332] rounded-lg shadow-lg p-4 sm:p-6 md:p-8 text-center transition duration-300 transform hover:scale-105">
                 <div className="text-2xl sm:text-3xl md:text-4xl text-indigo-500 mb-2 sm:mb-3 md:mb-4">
                   <FaDiscord className="mx-auto" />
                 </div>
@@ -203,7 +203,7 @@ export default function JoinPage() {
               </p>
               <div className="flex justify-center">
                 <a
-                  href="https://discord.gg/softtouch"
+                  href="https://discord.gg/wAGzpZXexg"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 border border-[#00B2FF] text-[#00B2FF] rounded-md hover:bg-[#00B2FF] hover:text-[#0D1525] transition duration-200 text-xs sm:text-sm"

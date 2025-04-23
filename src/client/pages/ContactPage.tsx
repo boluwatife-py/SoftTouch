@@ -358,7 +358,7 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-medium text-sm sm:text-base">Discord</h3>
                     <a
-                      href="https://discord.gg/softtouch"
+                      href="https://discord.gg/wAGzpZXexg"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-300 hover:text-[#00B2FF] text-xs sm:text-sm"
@@ -375,7 +375,7 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-medium text-sm sm:text-base">GitHub</h3>
                     <a
-                      href="https://github.com/softtouch"
+                      href="https://github.com/boluwatife-py/SoftTouch"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-300 hover:text-[#00B2FF] text-xs sm:text-sm"
@@ -451,7 +451,7 @@ export default function ContactPage() {
             </a>
 
             <a
-              href="https://github.com/softtouch/issues"
+              href="https://github.com/boluwatife-py/SoftTouch/issues"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-[#1A2332] rounded-lg p-6 text-center transition-all hover:bg-[#242e40] cursor-pointer"

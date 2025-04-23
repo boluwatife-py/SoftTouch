@@ -205,7 +205,7 @@ export default function FaqPage() {
             </SmoothNavLink>
             
             <a 
-              href="https://discord.gg/softtouch" 
+              href="https://discord.gg/wAGzpZXexg" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 border border-[#00B2FF] text-[#00B2FF] rounded-md font-medium shadow-lg hover:bg-[#00B2FF] hover:text-[#0D1525] transition duration-200 cursor-pointer text-xs sm:text-sm"
@@ -215,7 +215,7 @@ export default function FaqPage() {
             </a>
             
             <a 
-              href="https://github.com/softtouch" 
+              href="https://github.com/boluwatife-py/SoftTouch" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 border border-[#00B2FF] text-[#00B2FF] rounded-md font-medium shadow-lg hover:bg-[#00B2FF] hover:text-[#0D1525] transition duration-200 cursor-pointer text-xs sm:text-sm"
