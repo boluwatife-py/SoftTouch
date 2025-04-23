@@ -326,28 +326,28 @@ export default function DocsPage() {
   }, [searchQuery, apiData, isLoading]);
 
   return (
-    <section className="animate-fadeIn py-16">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold text-[#00B2FF]">
+    <section className="animate-fadeIn py-6 sm:py-8">
+      <div className="max-w-6xl mx-auto px-2 sm:px-3 lg:px-4">
+        <div className="text-center mb-4 sm:mb-6">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#00B2FF]">
             Documentation
           </h1>
-          <p className="mt-2 text-xl">Everything you need to use our APIs</p>
+          <p className="mt-1 sm:mt-2 text-sm sm:text-base md:text-lg">Everything you need to use our APIs</p>
 
           {/* Search Component */}
-          <div className="max-w-2xl mx-auto mt-8">
+          <div className="max-w-2xl mx-auto mt-4 sm:mt-6">
             <div className="relative">
               <Command className="border border-[#00B2FF]/30 rounded-xl shadow-xl bg-gradient-to-br from-[#1A2332] to-[#131d2c] overflow-hidden transition-all duration-200 w-full">
-                <div className="flex items-center border-b border-[#00B2FF]/20 px-4 py-3 w-full">
+                <div className="flex items-center border-b border-[#00B2FF]/20 px-2 sm:px-3 py-1.5 sm:py-2 w-full">
                   <FaSearch
-                    className="text-[#00B2FF] mr-3 flex-shrink-0"
-                    size={16}
+                    className="text-[#00B2FF] mr-1.5 sm:mr-2 flex-shrink-0"
+                    size={12}
                   />
                   <CommandInput
                     placeholder="Search the docs"
                     value={searchQuery}
                     onValueChange={setSearchQuery}
-                    className="text-[#D9E1E8] w-full flex-grow bg-transparent border-none focus:ring-0 focus:outline-none placeholder:text-[#6B7280] placeholder:text-sm text-base"
+                    className="text-[#D9E1E8] w-full flex-grow bg-transparent border-none focus:ring-0 focus:outline-none placeholder:text-[#6B7280] placeholder:text-xs sm:placeholder:text-sm text-xs sm:text-sm"
                     autoComplete="off"
                   />
                   {searchQuery && (
@@ -361,7 +361,7 @@ export default function DocsPage() {
                 </div>
 
                 {/* Command list - only shown when there are search results */}
-                <CommandList className="text-[#D9E1E8] max-h-[350px] overflow-auto">
+                <CommandList className="text-[#D9E1E8] max-h-[250px] sm:max-h-[300px] overflow-auto">
                   {searchQuery &&
                     (searchResults.length > 0 ? (
                       <CommandGroup heading="Search Results" className="px-0">
@@ -373,19 +373,19 @@ export default function DocsPage() {
                               scrollToSection(result.id);
                               setSearchQuery("");
                             }}
-                            className="flex items-center gap-4 p-3 cursor-pointer hover:bg-[#00B2FF]/10 transition-colors duration-150 rounded-md my-1"
+                            className="flex items-center gap-2 sm:gap-3 p-1.5 sm:p-2 cursor-pointer hover:bg-[#00B2FF]/10 transition-colors duration-150 rounded-md my-0.5"
                           >
                             {result.type === "api" ? (
-                              <div className="w-8 h-8 rounded-full bg-[#00325A] flex items-center justify-center flex-shrink-0 border border-[#00B2FF]/30">
-                                <FaCode className="text-[#00B2FF]" />
+                              <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-[#00325A] flex items-center justify-center flex-shrink-0 border border-[#00B2FF]/30">
+                                <FaCode className="text-[#00B2FF]" size={10} />
                               </div>
                             ) : (
-                              <div className="w-8 h-8 rounded-full bg-[#0A3A3A] flex items-center justify-center flex-shrink-0 border border-[#00B2FF]/30">
-                                <FaBookOpen className="text-[#00B2FF]" />
+                              <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-[#0A3A3A] flex items-center justify-center flex-shrink-0 border border-[#00B2FF]/30">
+                                <FaBookOpen className="text-[#00B2FF]" size={10} />
                               </div>
                             )}
                             <div className="flex flex-col">
-                              <span className="font-medium text-base text-[#00B2FF]">
+                              <span className="font-medium text-xs sm:text-sm text-[#00B2FF]">
                                 {result.title}
                               </span>
                               <span className="text-xs text-[#6B7280]">
@@ -398,16 +398,16 @@ export default function DocsPage() {
                         ))}
                       </CommandGroup>
                     ) : (
-                      <CommandEmpty className="py-8 text-center">
+                      <CommandEmpty className="py-4 sm:py-6 text-center">
                         <div className="flex flex-col items-center">
                           <FaSearch
-                            className="text-[#00B2FF]/40 mb-3"
-                            size={24}
+                            className="text-[#00B2FF]/40 mb-1.5 sm:mb-2"
+                            size={16}
                           />
-                          <p className="text-lg font-medium">
+                          <p className="text-sm sm:text-base font-medium">
                             No results found for "{searchQuery}"
                           </p>
-                          <p className="text-sm text-[#6B7280] mt-2">
+                          <p className="text-xs text-[#6B7280] mt-1.5">
                             Try using different keywords or check our API
                             catalog
                           </p>
@@ -420,26 +420,26 @@ export default function DocsPage() {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-3 sm:gap-4 lg:gap-6">
           {/* Enhanced Sidebar/Navigation */}
           <div className="lg:w-1/4">
-            <div className="bg-gradient-to-b from-[#1A2332] to-[#151e2c] p-5 rounded-xl shadow-lg sticky top-20 border border-[#00B2FF]/10 max-h-[calc(100vh-90px)] overflow-auto hidden-scrollbar">
-              <h3 className="text-xl font-semibold flex items-center mb-6 text-[#00B2FF] pb-3 border-b border-[#00B2FF]/20">
-                <FaBookOpen className="mr-3 text-[#00B2FF]" />
+            <div className="bg-gradient-to-b from-[#1A2332] to-[#151e2c] p-2 sm:p-3 rounded-xl shadow-lg sticky top-20 border border-[#00B2FF]/10 max-h-[calc(100vh-90px)] overflow-auto hidden-scrollbar">
+              <h3 className="text-base sm:text-lg font-semibold flex items-center mb-3 sm:mb-4 text-[#00B2FF] pb-1.5 sm:pb-2 border-b border-[#00B2FF]/20">
+                <FaBookOpen className="mr-1.5 sm:mr-2 text-[#00B2FF]" size={14} />
                 API Documentation
               </h3>
 
               {/* Documentation Sections */}
-              <div className="mb-6">
-                <h4 className="text-sm uppercase tracking-wider text-gray-400 mb-3 font-medium flex items-center">
-                  <FaInfoCircle className="mr-2 text-[#00B2FF]/70" size={14} />
+              <div className="mb-3 sm:mb-4">
+                <h4 className="text-xs sm:text-sm uppercase tracking-wider text-gray-400 mb-1.5 sm:mb-2 font-medium flex items-center">
+                  <FaInfoCircle className="mr-1.5 text-[#00B2FF]/70" size={10} />
                   Getting Started
                 </h4>
-                <ul className="space-y-1 ml-2">
+                <ul className="space-y-0.5 sm:space-y-1 ml-1.5">
                   <li>
                     <div
                       onClick={() => scrollToSection("introduction")}
-                      className={`px-3 py-2.5 rounded-lg transition-all duration-200 cursor-pointer flex items-center
+                      className={`px-1.5 sm:px-2 py-1.5 sm:py-2 rounded-lg transition-all duration-200 cursor-pointer flex items-center
                         ${
                           activeSection === "introduction"
                             ? "bg-[#00B2FF]/10 text-[#00B2FF] shadow-sm"
@@ -448,20 +448,20 @@ export default function DocsPage() {
                     >
                       <span className="relative flex items-center">
                         <span
-                          className={`w-2 h-2 rounded-full mr-2 ${
+                          className={`w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full mr-1.5 ${
                             activeSection === "introduction"
                               ? "bg-[#00B2FF]"
                               : "bg-gray-500"
                           }`}
                         ></span>
-                        Introduction
+                        <span className="text-xs sm:text-sm">Introduction</span>
                       </span>
                     </div>
                   </li>
                   <li>
                     <div
                       onClick={() => scrollToSection("free-usage")}
-                      className={`px-3 py-2.5 rounded-lg transition-all duration-200 cursor-pointer flex items-center
+                      className={`px-1.5 sm:px-2 py-1.5 sm:py-2 rounded-lg transition-all duration-200 cursor-pointer flex items-center
                         ${
                           activeSection === "free-usage"
                             ? "bg-[#00B2FF]/10 text-[#00B2FF] shadow-sm"
@@ -470,20 +470,20 @@ export default function DocsPage() {
                     >
                       <span className="relative flex items-center">
                         <span
-                          className={`w-2 h-2 rounded-full mr-2 ${
+                          className={`w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full mr-1.5 ${
                             activeSection === "free-usage"
                               ? "bg-[#00B2FF]"
                               : "bg-gray-500"
                           }`}
                         ></span>
-                        Free Usage
+                        <span className="text-xs sm:text-sm">Free Usage</span>
                       </span>
                     </div>
                   </li>
                   <li>
                     <div
                       onClick={() => scrollToSection("error-handling")}
-                      className={`px-3 py-2.5 rounded-lg transition-all duration-200 cursor-pointer flex items-center
+                      className={`px-1.5 sm:px-2 py-1.5 sm:py-2 rounded-lg transition-all duration-200 cursor-pointer flex items-center
                         ${
                           activeSection === "error-handling"
                             ? "bg-[#00B2FF]/10 text-[#00B2FF] shadow-sm"
@@ -492,13 +492,13 @@ export default function DocsPage() {
                     >
                       <span className="relative flex items-center">
                         <span
-                          className={`w-2 h-2 rounded-full mr-2 ${
+                          className={`w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full mr-1.5 ${
                             activeSection === "error-handling"
                               ? "bg-[#00B2FF]"
                               : "bg-gray-500"
                           }`}
                         ></span>
-                        Error Handling
+                        <span className="text-xs sm:text-sm">Error Handling</span>
                       </span>
                     </div>
                   </li>
@@ -506,27 +506,27 @@ export default function DocsPage() {
               </div>
 
               {/* API Endpoints Section */}
-              <div className="mt-2">
-                <h4 className="text-sm uppercase tracking-wider text-gray-400 mb-4 font-medium flex items-center">
-                  <FaCode className="mr-2 text-[#00B2FF]/70" size={14} />
+              <div className="mt-1.5">
+                <h4 className="text-xs sm:text-sm uppercase tracking-wider text-gray-400 mb-2 sm:mb-3 font-medium flex items-center">
+                  <FaCode className="mr-1.5 text-[#00B2FF]/70" size={10} />
                   API Endpoints
-                  <span className="ml-2 bg-[#00B2FF]/10 text-[#00B2FF] px-2 py-0.5 rounded-full text-xs">
+                  <span className="ml-1.5 bg-[#00B2FF]/10 text-[#00B2FF] px-1 sm:px-1.5 py-0.5 rounded-full text-xs">
                     {isLoading ? "..." : apiData.length}
                   </span>
                 </h4>
 
                 {isLoading ? (
-                  <div className="flex justify-center p-6 bg-[#0D1525]/40 rounded-lg">
+                  <div className="flex justify-center p-3 sm:p-4 bg-[#0D1525]/40 rounded-lg">
                     <div className="flex flex-col items-center">
                       <Spinner size="sm" />
-                      <span className="text-xs text-gray-400 mt-2">
+                      <span className="text-xs text-gray-400 mt-1.5">
                         Loading APIs...
                       </span>
                     </div>
                   </div>
                 ) : (
-                  <div className="pr-1">
-                    <div className="space-y-1 max-h-[calc(100vh-350px)]  pr-2">
+                  <div className="pr-0.5">
+                    <div className="space-y-0.5 sm:space-y-1 max-h-[calc(100vh-350px)] pr-1.5">
                       {apiData.map((api) => {
                         const id = api.name.toLowerCase().replace(/\s+/g, "");
 
@@ -549,7 +549,7 @@ export default function DocsPage() {
                           <div
                             key={id}
                             onClick={() => scrollToSection(id)}
-                            className={`px-3 py-2.5 rounded-lg transition-all duration-200 cursor-pointer
+                            className={`px-1.5 sm:px-2 py-1.5 sm:py-2 rounded-lg transition-all duration-200 cursor-pointer
                               ${
                                 activeSection === id
                                   ? "bg-[#00B2FF]/10 shadow-sm border border-[#00B2FF]/20"
@@ -559,7 +559,7 @@ export default function DocsPage() {
                             <div className="flex items-center justify-between">
                               <div className="flex items-center">
                                 <span
-                                  className={`mr-2 text-xs font-mono px-2 py-1 rounded-md border ${methodColor}`}
+                                  className={`mr-1.5 text-xs font-mono px-1 sm:px-1.5 py-0.5 rounded-md border ${methodColor}`}
                                 >
                                   {api.method}
                                 </span>
@@ -573,9 +573,9 @@ export default function DocsPage() {
                                   {api.name}
                                 </span>
                               </div>
-                              <div className="ml-2 transform transition-transform duration-200">
+                              <div className="ml-1.5 transform transition-transform duration-200">
                                 <FaArrowRight
-                                  size={12}
+                                  size={8}
                                   className={`${
                                     activeSection === id
                                       ? "text-[#00B2FF]"
@@ -605,18 +605,18 @@ export default function DocsPage() {
             <div
               ref={(el) => (sectionRefs.current["introduction"] = el)}
               id="introduction"
-              className="bg-[#1A2332] rounded-lg shadow-lg p-6 mb-8"
+              className="bg-[#1A2332] rounded-lg shadow-lg p-3 sm:p-4 mb-4 sm:mb-6"
             >
-              <h2 className="text-2xl font-semibold text-[#00B2FF] mb-4">
+              <h2 className="text-lg sm:text-xl font-semibold text-[#00B2FF] mb-2 sm:mb-3">
                 Introduction
               </h2>
-              <p className="mb-4">
+              <p className="text-xs sm:text-sm mb-2 sm:mb-3">
                 Welcome to the SoftTouch API documentation. Our APIs are
                 designed to be easy to use, reliable, and developer-friendly.
                 All of our APIs use REST architecture and return responses in
                 JSON format.
               </p>
-              <p>
+              <p className="text-xs sm:text-sm">
                 Before diving into specific endpoints, please take a moment to
                 understand how our free usage works and check out our error
                 handling to ensure smooth integration with your applications.
@@ -627,20 +627,20 @@ export default function DocsPage() {
             <div
               ref={(el) => (sectionRefs.current["free-usage"] = el)}
               id="free-usage"
-              className="bg-[#1A2332] rounded-lg shadow-lg p-6 mb-8"
+              className="bg-[#1A2332] rounded-lg shadow-lg p-3 sm:p-4 mb-4 sm:mb-6"
             >
-              <h2 className="text-2xl font-semibold text-[#00B2FF] mb-4">
+              <h2 className="text-lg sm:text-xl font-semibold text-[#00B2FF] mb-2 sm:mb-3">
                 Free Usage
               </h2>
-              <p className="mb-4">
+              <p className="text-xs sm:text-sm mb-2 sm:mb-3">
                 All SoftTouch APIs are completely free to use for everyone, with
                 no rate limits or restrictions. You can integrate our APIs into
                 your applications, websites, or tools without worrying about
                 authentication or usage limits.
               </p>
-              <div className="mb-4">
-                <h3 className="text-lg font-medium mb-2">Simple Integration</h3>
-                <p className="mb-4">
+              <div className="mb-2 sm:mb-3">
+                <h3 className="text-sm sm:text-base font-medium mb-1.5">Simple Integration</h3>
+                <p className="text-xs sm:text-sm mb-2 sm:mb-3">
                   Our APIs are designed to be easy to integrate with minimal
                   setup. No signup or API keys are required. Simply make a
                   request to the endpoint, and you'll receive your data in JSON
@@ -655,9 +655,9 @@ export default function DocsPage() {
                   title="Simple API Request"
                 />
               </div>
-              <div className="mb-4">
-                <h3 className="text-lg font-medium mb-2">No Usage Limits</h3>
-                <p>
+              <div className="mb-2 sm:mb-3">
+                <h3 className="text-sm sm:text-base font-medium mb-1.5">No Usage Limits</h3>
+                <p className="text-xs sm:text-sm">
                   Unlike many other API providers, we don't impose any rate
                   limits on our APIs. Use them as much as you need for your
                   projects without restrictions.
@@ -669,12 +669,12 @@ export default function DocsPage() {
             <div
               ref={(el) => (sectionRefs.current["error-handling"] = el)}
               id="error-handling"
-              className="bg-[#1A2332] rounded-lg shadow-lg p-6 mb-8"
+              className="bg-[#1A2332] rounded-lg shadow-lg p-3 sm:p-4 mb-4 sm:mb-6"
             >
-              <h2 className="text-2xl font-semibold text-[#00B2FF] mb-4">
+              <h2 className="text-lg sm:text-xl font-semibold text-[#00B2FF] mb-2 sm:mb-3">
                 Error Handling
               </h2>
-              <p className="mb-4">
+              <p className="text-xs sm:text-sm mb-2 sm:mb-3">
                 When an error occurs, our APIs return appropriate HTTP status
                 codes along with a JSON response containing details about the
                 error:
@@ -690,27 +690,27 @@ export default function DocsPage() {
 }`}
                 title="Error Response"
               />
-              <table className="w-full text-left">
+              <table className="w-full text-left text-xs sm:text-sm">
                 <thead>
                   <tr className="border-b border-[#0D1525]">
-                    <th className="py-2 px-4">Status Code</th>
-                    <th className="py-2 px-4">Description</th>
+                    <th className="py-1.5 sm:py-2 px-2 sm:px-3">Status Code</th>
+                    <th className="py-1.5 sm:py-2 px-2 sm:px-3">Description</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr className="border-b border-[#0D1525]">
-                    <td className="py-2 px-4">400</td>
-                    <td className="py-2 px-4">
+                    <td className="py-1.5 sm:py-2 px-2 sm:px-3">400</td>
+                    <td className="py-1.5 sm:py-2 px-2 sm:px-3">
                       Bad Request - Invalid parameters or request
                     </td>
                   </tr>
                   <tr className="border-b border-[#0D1525]">
-                    <td className="py-2 px-4">403</td>
-                    <td className="py-2 px-4">Forbidden - Access denied</td>
+                    <td className="py-1.5 sm:py-2 px-2 sm:px-3">403</td>
+                    <td className="py-1.5 sm:py-2 px-2 sm:px-3">Forbidden - Access denied</td>
                   </tr>
                   <tr>
-                    <td className="py-2 px-4">500</td>
-                    <td className="py-2 px-4">
+                    <td className="py-1.5 sm:py-2 px-2 sm:px-3">500</td>
+                    <td className="py-1.5 sm:py-2 px-2 sm:px-3">
                       Internal Server Error - Something went wrong on our end
                     </td>
                   </tr>
@@ -720,7 +720,7 @@ export default function DocsPage() {
 
             {/* API Endpoints */}
             {isLoading ? (
-              <div className="bg-[#1A2332] rounded-lg shadow-lg p-8 mb-8 flex justify-center items-center">
+              <div className="bg-[#1A2332] rounded-lg shadow-lg p-6 sm:p-8 mb-4 sm:mb-6 flex justify-center items-center">
                 <Spinner size="md" />
               </div>
             ) : (
@@ -731,24 +731,24 @@ export default function DocsPage() {
                     key={api.name}
                     ref={(el) => (sectionRefs.current[id] = el)}
                     id={id}
-                    className={`bg-gradient-to-br from-[#1A2332] to-[#151e2c] rounded-xl shadow-xl overflow-hidden mb-12 transition-all duration-300 ${
+                    className={`bg-gradient-to-br from-[#1A2332] to-[#151e2c] rounded-xl shadow-xl overflow-hidden mb-8 sm:mb-10 transition-all duration-300 ${
                       activeSection === id
                         ? "shadow-[0_5px_30px_rgba(0,178,255,0.15)]"
                         : ""
                     }`}
                   >
-                    <div className="p-8">
-                      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-                        <div className="mb-4 md:mb-0">
+                    <div className="p-4 sm:p-6">
+                      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 sm:mb-6">
+                        <div className="mb-3 sm:mb-4 md:mb-0">
                           <div className="flex items-center">
-                            <div className="w-10 h-10 rounded-lg bg-[#00B2FF]/10 border border-[#00B2FF]/20 flex items-center justify-center mr-3 shadow-sm">
-                              <FaCode className="text-[#00B2FF]" size={20} />
+                            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[#00B2FF]/10 border border-[#00B2FF]/20 flex items-center justify-center mr-2 sm:mr-3 shadow-sm">
+                              <FaCode className="text-[#00B2FF]" size={16} />
                             </div>
-                            <h2 className="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#00B2FF] to-[#00D4FF]">
+                            <h2 className="text-xl sm:text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#00B2FF] to-[#00D4FF]">
                               {api.name} API
                             </h2>
                           </div>
-                          <p className="text-sm text-gray-400 mt-2 md:max-w-lg">
+                          <p className="text-xs sm:text-sm text-gray-400 mt-1.5 sm:mt-2 md:max-w-lg">
                             {api.part_description}
                           </p>
                         </div>
@@ -757,7 +757,7 @@ export default function DocsPage() {
                           {/* Method Badge */}
                           <div
                             className={`
-                          px-4 py-2 text-sm font-mono rounded-lg shadow-sm mb-2
+                          px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-mono rounded-lg shadow-sm mb-1.5 sm:mb-2
                           ${
                             api.method === "GET"
                               ? "bg-green-900/30 text-green-300 border border-green-800"
@@ -775,43 +775,43 @@ export default function DocsPage() {
                           </div>
 
                           {/* Endpoint */}
-                          <code className="px-3 py-1.5 text-xs rounded-lg bg-[#0D1525] text-[#00D4FF] font-mono border border-[#00B2FF]/10">
+                          <code className="px-2 sm:px-3 py-1 sm:py-1.5 text-xs rounded-lg bg-[#0D1525] text-[#00D4FF] font-mono border border-[#00B2FF]/10">
                             {api.endpoint}
                           </code>
                         </div>
                       </div>
 
-                      <div className="mb-6">
-                        <h3 className="text-lg font-medium mb-2 flex items-center">
-                          <FaCode className="text-[#00B2FF] mr-2" /> Description
+                      <div className="mb-4 sm:mb-6">
+                        <h3 className="text-base sm:text-lg font-medium mb-1.5 sm:mb-2 flex items-center">
+                          <FaCode className="text-[#00B2FF] mr-1.5" size={14} /> Description
                         </h3>
-                        <p>{api.description}</p>
+                        <p className="text-xs sm:text-sm">{api.description}</p>
                       </div>
 
                       {api.params && api.params.length > 0 && (
-                        <div className="mb-6">
-                          <h3 className="text-lg font-medium mb-2 flex items-center">
-                            <FaInfoCircle className="text-[#00B2FF] mr-2" />{" "}
+                        <div className="mb-4 sm:mb-6">
+                          <h3 className="text-base sm:text-lg font-medium mb-1.5 sm:mb-2 flex items-center">
+                            <FaInfoCircle className="text-[#00B2FF] mr-1.5" size={14} />{" "}
                             Query Parameters
                           </h3>
-                          <div className="max-h-[180px] overflow-auto custom-scrollbar border border-[#0D1525]/50 rounded-lg bg-[#0D1525]/20">
+                          <div className="max-h-[150px] sm:max-h-[180px] overflow-auto custom-scrollbar border border-[#0D1525]/50 rounded-lg bg-[#0D1525]/20">
                             <table className="w-full text-left text-xs">
                               <thead className="sticky top-0 bg-[#0D1525] text-[#00B2FF]">
                                 <tr>
                                   <th
-                                    className="py-1.5 px-2 font-medium"
+                                    className="py-1 sm:py-1.5 px-1.5 sm:px-2 font-medium"
                                     style={{ width: "20%" }}
                                   >
                                     Parameter
                                   </th>
                                   <th
-                                    className="py-1.5 px-2 font-medium"
+                                    className="py-1 sm:py-1.5 px-1.5 sm:px-2 font-medium"
                                     style={{ width: "15%" }}
                                   >
                                     Type
                                   </th>
                                   <th
-                                    className="py-1.5 px-2 font-medium"
+                                    className="py-1 sm:py-1.5 px-1.5 sm:px-2 font-medium"
                                     style={{ width: "65%" }}
                                   >
                                     Description
@@ -824,15 +824,15 @@ export default function DocsPage() {
                                     key={param.name}
                                     className="border-b border-[#0D1525]/30 hover:bg-[#0D1525]/40 transition-colors"
                                   >
-                                    <td className="py-1 px-2 align-top">
-                                      <code className="bg-[#0D1525] px-1.5 py-0.5 rounded-md text-[#00D4FF] text-xs inline-block">
+                                    <td className="py-1 px-1.5 sm:px-2 align-top">
+                                      <code className="bg-[#0D1525] px-1 sm:px-1.5 py-0.5 rounded-md text-[#00D4FF] text-xs inline-block">
                                         {param.name}
                                       </code>
                                     </td>
-                                    <td className="py-1 px-2 text-[#0DE5A2] font-mono text-xs align-top">
+                                    <td className="py-1 px-1.5 sm:px-2 text-[#0DE5A2] font-mono text-xs align-top">
                                       {param.type}
                                     </td>
-                                    <td className="py-1 px-2 text-gray-300 align-top">
+                                    <td className="py-1 px-1.5 sm:px-2 text-gray-300 align-top">
                                       {param.description}
                                     </td>
                                   </tr>
@@ -843,9 +843,9 @@ export default function DocsPage() {
                         </div>
                       )}
 
-                      <div className="mb-6">
-                        <h3 className="text-lg font-medium mb-2 flex items-center">
-                          <FaCode className="text-[#00B2FF] mr-2" /> Example
+                      <div className="mb-4 sm:mb-6">
+                        <h3 className="text-base sm:text-lg font-medium mb-1.5 sm:mb-2 flex items-center">
+                          <FaCode className="text-[#00B2FF] mr-1.5" size={14} /> Example
                           Request
                         </h3>
                         <CodeSnippet
@@ -893,20 +893,20 @@ fetch('https://api.softtouch.dev/v1${api.endpoint}?${api.params
                         />
                       </div>
 
-                      <div className="mb-6">
-                        <h3 className="text-lg font-medium mb-2 flex items-center">
-                          <FaCode className="text-[#00B2FF] mr-2" /> Response
+                      <div className="mb-4 sm:mb-6">
+                        <h3 className="text-base sm:text-lg font-medium mb-1.5 sm:mb-2 flex items-center">
+                          <FaCode className="text-[#00B2FF] mr-1.5" size={14} /> Response
                           Format
                         </h3>
-                        <div className="flex items-center mb-2">
-                          <span className="text-sm font-medium mr-2">
+                        <div className="flex items-center mb-1.5 sm:mb-2">
+                          <span className="text-xs sm:text-sm font-medium mr-1.5">
                             Content-Type:
                           </span>
-                          <code className="bg-[#0D1525] px-2 py-1 rounded text-[#00D4FF] text-sm">
+                          <code className="bg-[#0D1525] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-[#00D4FF] text-xs sm:text-sm">
                             application/json
                           </code>
                         </div>
-                        <div className="max-h-[300px]">
+                        <div className="max-h-[250px] sm:max-h-[300px]">
                           <CodeSnippet
                             language="json"
                             code={
@@ -924,26 +924,26 @@ fetch('https://api.softtouch.dev/v1${api.endpoint}?${api.params
                       </div>
 
                       {/* Test API Section for all APIs */}
-                      <div className="mt-6 border-t border-gray-700 pt-6">
-                        <h3 className="text-lg font-medium mb-4 flex items-center">
-                          <FaPlayCircle className="text-[#00B2FF] mr-2" /> Test
+                      <div className="mt-3 sm:mt-4 border-t border-gray-700 pt-3 sm:pt-4">
+                        <h3 className="text-base sm:text-lg font-medium mb-3 sm:mb-4 flex items-center">
+                          <FaPlayCircle className="text-[#00B2FF] mr-1.5" size={14} /> Test
                           This API
                         </h3>
 
                         {api.params && api.params.length > 0 ? (
-                          <div className="mb-4">
-                            <div className="bg-gradient-to-r from-[#0D1525] to-[#0D1525]/70 border border-[#0D1525]/90 rounded-lg shadow-inner mb-4">
-                              <div className="flex items-center p-3 border-b border-[#00B2FF]/20">
+                          <div className="mb-3 sm:mb-4">
+                            <div className="bg-gradient-to-r from-[#0D1525] to-[#0D1525]/70 border border-[#0D1525]/90 rounded-lg shadow-inner mb-3 sm:mb-4">
+                              <div className="flex items-center p-2 sm:p-3 border-b border-[#00B2FF]/20">
                                 <FaInfoCircle
-                                  className="text-[#00B2FF] mr-2 flex-shrink-0"
-                                  size={14}
+                                  className="text-[#00B2FF] mr-1.5 flex-shrink-0"
+                                  size={12}
                                 />
-                                <h4 className="text-sm font-medium">
+                                <h4 className="text-xs sm:text-sm font-medium">
                                   Query Parameters
                                 </h4>
                               </div>
 
-                              <div className="p-2 max-h-[200px] overflow-y-auto custom-scrollbar">
+                              <div className="p-1.5 sm:p-2 max-h-[180px] sm:max-h-[200px] overflow-y-auto custom-scrollbar">
                                 <table className="w-full text-left text-xs border-collapse">
                                   <tbody>
                                     {api.params.map((param, idx) => {
@@ -957,12 +957,12 @@ fetch('https://api.softtouch.dev/v1${api.endpoint}?${api.params
                                           key={idx}
                                           className="border-b border-[#0D1525]/30"
                                         >
-                                          <td className="py-1 px-2 align-top w-1/4">
+                                          <td className="py-1 px-1.5 sm:px-2 align-top w-1/4">
                                             <label
                                               htmlFor={paramId}
-                                              className="flex items-center gap-1.5"
+                                              className="flex items-center gap-1"
                                             >
-                                              <code className="bg-[#0D1525] px-1.5 py-0.5 rounded text-[#0DE5A2] text-xs inline-block font-mono">
+                                              <code className="bg-[#0D1525] px-1 sm:px-1.5 py-0.5 rounded text-[#0DE5A2] text-xs inline-block font-mono">
                                                 {param.name}
                                               </code>
                                               <span className="text-xs text-gray-400 px-1 py-0.5 bg-[#0D1525] rounded">
@@ -970,7 +970,7 @@ fetch('https://api.softtouch.dev/v1${api.endpoint}?${api.params
                                               </span>
                                             </label>
                                           </td>
-                                          <td className="py-1 px-2 align-top w-3/4">
+                                          <td className="py-1 px-1.5 sm:px-2 align-top w-3/4">
                                             <input
                                               id={paramId}
                                               type={
@@ -979,7 +979,7 @@ fetch('https://api.softtouch.dev/v1${api.endpoint}?${api.params
                                                   : "text"
                                               }
                                               placeholder={param.description}
-                                              className="w-full px-2 py-1 bg-[#0D1525] text-[#D9E1E8] rounded border border-[#00B2FF]/20 focus:outline-none focus:ring-1 focus:border-[#00B2FF] focus:ring-[#00D4FF] text-xs"
+                                              className="w-full px-1.5 sm:px-2 py-0.5 sm:py-1 bg-[#0D1525] text-[#D9E1E8] rounded border border-[#00B2FF]/20 focus:outline-none focus:ring-1 focus:border-[#00B2FF] focus:ring-[#00D4FF] text-xs"
                                             />
                                           </td>
                                         </tr>
@@ -990,9 +990,9 @@ fetch('https://api.softtouch.dev/v1${api.endpoint}?${api.params
                               </div>
                             </div>
 
-                            <div className="flex flex-wrap items-center gap-3">
+                            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                               <button
-                                className="px-4 py-2 bg-[#00B2FF] text-[#0D1525] rounded hover:bg-[#00D4FF] transition duration-200 flex items-center text-sm font-medium"
+                                className="px-3 sm:px-4 py-1.5 sm:py-2 bg-[#00B2FF] text-[#0D1525] rounded hover:bg-[#00D4FF] transition duration-200 flex items-center text-xs sm:text-sm font-medium"
                                 onClick={() => {
                                   // Collect parameters from inputs
                                   const params: Record<string, string> = {};
@@ -1015,11 +1015,11 @@ fetch('https://api.softtouch.dev/v1${api.endpoint}?${api.params
                                 }}
                               >
                                 Send with Parameters{" "}
-                                <FaPlay className="ml-2" size={12} />
+                                <FaPlay className="ml-1.5" size={10} />
                               </button>
 
                               <button
-                                className="px-3 py-1.5 bg-[#1A2332] text-[#00B2FF] rounded hover:bg-[#00B2FF]/10 transition duration-200 flex items-center text-sm border border-[#00B2FF]/30"
+                                className="px-2 sm:px-3 py-1 sm:py-1.5 bg-[#1A2332] text-[#00B2FF] rounded hover:bg-[#00B2FF]/10 transition duration-200 flex items-center text-xs sm:text-sm border border-[#00B2FF]/30"
                                 onClick={() => handleExampleRequest(api)}
                               >
                                 Send Default
@@ -1029,26 +1029,26 @@ fetch('https://api.softtouch.dev/v1${api.endpoint}?${api.params
                         ) : (
                           <div className="flex">
                             <button
-                              className="px-4 py-2 bg-[#00B2FF] text-[#0D1525] rounded hover:bg-[#00D4FF] transition duration-200 flex items-center"
+                              className="px-3 sm:px-4 py-1.5 sm:py-2 bg-[#00B2FF] text-[#0D1525] rounded hover:bg-[#00D4FF] transition duration-200 flex items-center text-xs sm:text-sm"
                               onClick={() => handleExampleRequest(api)}
                             >
-                              Send Request <FaPlay className="ml-2" />
+                              Send Request <FaPlay className="ml-1.5" size={10} />
                             </button>
                           </div>
                         )}
 
                         {/* Results display for all APIs */}
-                        <div className="mt-4 bg-gradient-to-r from-[#0D1525] to-[#0D1525]/70 border border-[#0D1525]/90 rounded-lg shadow-inner">
-                          <div className="flex items-center p-3 border-b border-[#00B2FF]/20">
+                        <div className="mt-3 sm:mt-4 bg-gradient-to-r from-[#0D1525] to-[#0D1525]/70 border border-[#0D1525]/90 rounded-lg shadow-inner">
+                          <div className="flex items-center p-2 sm:p-3 border-b border-[#00B2FF]/20">
                             <FaArrowRight
-                              className="text-[#00B2FF] mr-2 flex-shrink-0"
-                              size={14}
+                              className="text-[#00B2FF] mr-1.5 flex-shrink-0"
+                              size={12}
                             />
-                            <h4 className="text-sm font-medium">
+                            <h4 className="text-xs sm:text-sm font-medium">
                               Response Result
                             </h4>
                           </div>
-                          <div className="p-3">
+                          <div className="p-2 sm:p-3">
                             <CodeSnippet
                               language="json"
                               code={
