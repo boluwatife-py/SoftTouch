@@ -118,20 +118,20 @@ export default function FaqPage() {
     : faqs.filter(faq => faq.category === activeCategory);
 
   return (
-    <section className="animate-fadeIn py-16">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold text-[#00B2FF]">Frequently Asked Questions</h1>
-          <p className="mt-2 text-xl">Got questions? We've got answers.</p>
+    <section className="animate-fadeIn py-8 sm:py-12 md:py-16">
+      <div className="max-w-5xl mx-auto px-3 sm:px-4 lg:px-6">
+        <div className="text-center mb-6 sm:mb-8 md:mb-12">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#00B2FF]">Frequently Asked Questions</h1>
+          <p className="mt-1 sm:mt-2 text-base sm:text-lg md:text-xl">Got questions? We've got answers.</p>
         </div>
 
         {/* Category Filters */}
-        <div className="mb-8 flex flex-wrap justify-center gap-2">
+        <div className="mb-4 sm:mb-6 md:mb-8 flex flex-wrap justify-center gap-1.5 sm:gap-2">
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className={`px-4 py-2 rounded-md text-sm font-medium capitalize transition-all ${
+              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium capitalize transition-all ${
                 activeCategory === category
                   ? "bg-[#00B2FF] text-[#0D1525]"
                   : "bg-[#1A2332] text-[#D9E1E8] hover:bg-[#1A2332]/80"
@@ -143,7 +143,7 @@ export default function FaqPage() {
         </div>
 
         <div className="max-w-3xl mx-auto">
-          <div className="space-y-4">
+          <div className="space-y-2 sm:space-y-3 md:space-y-4">
             {filteredFaqs.length > 0 ? (
               filteredFaqs.map((faq, index) => (
                 <div 
@@ -151,31 +151,37 @@ export default function FaqPage() {
                   className="bg-[#1A2332] rounded-lg shadow-md overflow-hidden transition-all duration-200 hover:shadow-lg"
                 >
                   <button
-                    className="flex justify-between items-center w-full p-6 text-left focus:outline-none"
+                    className="flex justify-between items-center w-full p-3 sm:p-4 md:p-6 text-left focus:outline-none"
                     onClick={() => toggleFaq(index)}
                     aria-expanded={openIndex === index}
                   >
                     <div className="flex items-center">
-                      <FaQuestionCircle className="text-[#00B2FF] mr-3 flex-shrink-0" />
-                      <h3 className="text-lg font-medium text-[#00B2FF]">{faq.question}</h3>
+                      <FaQuestionCircle className="text-[#00B2FF] mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                      <h3 className="text-sm sm:text-base md:text-lg font-medium text-[#00B2FF]">{faq.question}</h3>
                     </div>
                     <ChevronDown 
-                      className={`h-6 w-6 text-[#00B2FF] transition-transform duration-200 ${openIndex === index ? 'transform rotate-180' : ''}`} 
+                      className={`h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 text-[#00B2FF] transition-transform duration-200 ${openIndex === index ? 'transform rotate-180' : ''}`} 
                     />
                   </button>
-                  <div className={`px-6 pb-6 ${openIndex === index ? 'block' : 'hidden'}`}>
-                    <div className="pl-8 border-l-2 border-[#00B2FF] ml-2">
-                      <p>{faq.answer}</p>
+                  <div 
+                    className={`px-3 sm:px-4 md:px-6 pb-3 sm:pb-4 md:pb-6 transition-all duration-200 ${
+                      openIndex === index 
+                        ? 'max-h-[500px] opacity-100' 
+                        : 'max-h-0 opacity-0 overflow-hidden'
+                    }`}
+                  >
+                    <div className="pl-4 sm:pl-6 md:pl-8 border-l-2 border-[#00B2FF] ml-1 sm:ml-2">
+                      <p className="text-xs sm:text-sm md:text-base">{faq.answer}</p>
                     </div>
                   </div>
                 </div>
               ))
             ) : (
-              <div className="text-center py-12 bg-[#1A2332] rounded-lg">
-                <p className="text-lg">No FAQs found in this category.</p>
+              <div className="text-center py-6 sm:py-8 md:py-12 bg-[#1A2332] rounded-lg">
+                <p className="text-sm sm:text-base md:text-lg">No FAQs found in this category.</p>
                 <button 
                   onClick={() => setActiveCategory("all")}
-                  className="mt-4 px-4 py-2 bg-[#00B2FF] text-[#0D1525] rounded-md"
+                  className="mt-2 sm:mt-3 md:mt-4 px-3 sm:px-4 py-1.5 sm:py-2 bg-[#00B2FF] text-[#0D1525] rounded-md text-xs sm:text-sm"
                 >
                   View All FAQs
                 </button>
@@ -185,26 +191,36 @@ export default function FaqPage() {
         </div>
         
         {/* Contact Section */}
-        <div className="mt-12 bg-[#1A2332] rounded-lg shadow-md p-6 text-center">
-          <h2 className="text-xl font-semibold mb-4">Still have questions?</h2>
-          <p className="mb-6">If you couldn't find the answer to your question, feel free to contact us.</p>
+        <div className="mt-6 sm:mt-8 md:mt-12 bg-[#1A2332] rounded-lg shadow-md p-4 sm:p-5 md:p-6 text-center">
+          <h2 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3 md:mb-4">Still have questions?</h2>
+          <p className="mb-4 sm:mb-5 md:mb-6 text-sm sm:text-base">If you couldn't find the answer to your question, feel free to contact us.</p>
           
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4">
             <SmoothNavLink 
               to="/contact"
-              className="inline-flex items-center px-6 py-3 bg-[#00B2FF] text-[#0D1525] rounded-md font-medium shadow-lg hover:bg-[#00D4FF] transition duration-200 cursor-pointer"
+              className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-[#00B2FF] text-[#0D1525] rounded-md font-medium shadow-lg hover:bg-[#00D4FF] transition duration-200 cursor-pointer text-xs sm:text-sm"
             >
-              <FaEnvelope className="mr-2" />
+              <FaEnvelope className="mr-1.5 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
               Contact Us
             </SmoothNavLink>
             
-            <a href="https://discord.gg/wAGzpZXexg" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-6 py-3 border border-[#00B2FF] text-[#00B2FF] rounded-md font-medium shadow-lg hover:bg-[#00B2FF] hover:text-[#0D1525] transition duration-200 cursor-pointer">
-              <FaDiscord className="mr-2" />
+            <a 
+              href="https://discord.gg/softtouch" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 border border-[#00B2FF] text-[#00B2FF] rounded-md font-medium shadow-lg hover:bg-[#00B2FF] hover:text-[#0D1525] transition duration-200 cursor-pointer text-xs sm:text-sm"
+            >
+              <FaDiscord className="mr-1.5 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
               Join Discord
             </a>
             
-            <a href="https://github.com/softtouch" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-6 py-3 border border-[#00B2FF] text-[#00B2FF] rounded-md font-medium shadow-lg hover:bg-[#00B2FF] hover:text-[#0D1525] transition duration-200 cursor-pointer">
-              <FaGithub className="mr-2" />
+            <a 
+              href="https://github.com/softtouch" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 border border-[#00B2FF] text-[#00B2FF] rounded-md font-medium shadow-lg hover:bg-[#00B2FF] hover:text-[#0D1525] transition duration-200 cursor-pointer text-xs sm:text-sm"
+            >
+              <FaGithub className="mr-1.5 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
               GitHub
             </a>
           </div>

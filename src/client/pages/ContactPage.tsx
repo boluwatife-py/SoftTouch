@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   FaEnvelope,
   FaDiscord,
@@ -7,8 +7,17 @@ import {
   FaPhoneAlt,
   FaClock,
   FaDollarSign,
+  FaCheck,
+  FaExclamationTriangle,
 } from "react-icons/fa";
 import SmoothNavLink from "@/components/SmoothNavLink";
+
+interface FormErrors {
+  name?: string;
+  email?: string;
+  subject?: string;
+  message?: string;
+}
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -17,25 +26,88 @@ export default function ContactPage() {
     subject: "",
     message: "",
   });
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<null | 'success' | 'error'>(null); // null, 'success', or 'error'
+  const [submitStatus, setSubmitStatus] = useState<null | 'success' | 'error'>(null);
+
+  const validateField = (name: string, value: string): string | undefined => {
+    switch (name) {
+      case 'name':
+        if (!value.trim()) return 'Name is required';
+        if (value.length < 2) return 'Name must be at least 2 characters';
+        if (value.length > 50) return 'Name must be less than 50 characters';
+        return undefined;
+      case 'email':
+        if (!value.trim()) return 'Email is required';
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) return 'Please enter a valid email address';
+        return undefined;
+      case 'subject':
+        if (!value) return 'Please select a subject';
+        return undefined;
+      case 'message':
+        if (!value.trim()) return 'Message is required';
+        if (value.length < 10) return 'Message must be at least 10 characters';
+        if (value.length > 1000) return 'Message must be less than 1000 characters';
+        return undefined;
+      default:
+        return undefined;
+    }
+  };
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { id, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [id]: value,
-    }));
+    setFormData(prev => ({ ...prev, [id]: value }));
+    
+    // Validate on change if field has been touched
+    if (touched[id]) {
+      const error = validateField(id, value);
+      setErrors(prev => ({ ...prev, [id]: error }));
+    }
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { id } = e.target;
+    setTouched(prev => ({ ...prev, [id]: true }));
+    const error = validateField(id, formData[id as keyof typeof formData]);
+    setErrors(prev => ({ ...prev, [id]: error }));
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
+    let isValid = true;
+
+    Object.keys(formData).forEach(key => {
+      const error = validateField(key, formData[key as keyof typeof formData]);
+      if (error) {
+        newErrors[key as keyof FormErrors] = error;
+        isValid = false;
+      }
+    });
+
+    setErrors(newErrors);
+    return isValid;
   };
 
   const formUrl: string = import.meta.env.VITE_API_URL + '/contact';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Mark all fields as touched
+    const allTouched = Object.keys(formData).reduce((acc, key) => {
+      acc[key] = true;
+      return acc;
+    }, {} as Record<string, boolean>);
+    setTouched(allTouched);
+
+    if (!validateForm()) {
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitStatus(null);
 
@@ -62,6 +134,8 @@ export default function ContactPage() {
           subject: "",
           message: "",
         });
+        setTouched({});
+        setErrors({});
       })
       .catch((error) => {
         console.log(error);
@@ -74,94 +148,118 @@ export default function ContactPage() {
     }, 5000);
   };
 
+  const InputWrapper = ({ children, id, label }: { children: React.ReactNode; id: string; label: string }) => (
+    <div className="mb-4 sm:mb-6">
+      <label
+        htmlFor={id}
+        className="block text-xs sm:text-sm font-medium mb-1 sm:mb-2"
+      >
+        {label}
+      </label>
+      <div className="relative">
+        {children}
+        {touched[id] && errors[id] && (
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 text-red-400">
+            <FaExclamationTriangle className="h-4 w-4" />
+          </div>
+        )}
+        {touched[id] && !errors[id] && formData[id as keyof typeof formData] && (
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 text-green-400">
+            <FaCheck className="h-4 w-4" />
+          </div>
+        )}
+      </div>
+      {touched[id] && errors[id] && (
+        <p className="mt-1 text-xs text-red-400">{errors[id]}</p>
+      )}
+    </div>
+  );
+
   return (
-    <section className="animate-fadeIn py-16">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold text-[#00B2FF]">
+    <section className="animate-fadeIn py-8 sm:py-12 md:py-16">
+      <div className="max-w-6xl mx-auto px-3 sm:px-4 lg:px-6">
+        <div className="text-center mb-6 sm:mb-8 md:mb-12">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#00B2FF]">
             Contact Us
           </h1>
-          <p className="mt-2 text-xl mb-4">We'd love to hear from you</p>
-          <p className="max-w-2xl mx-auto">
+          <p className="mt-1 sm:mt-2 text-base sm:text-lg md:text-xl mb-2 sm:mb-3 md:mb-4">We'd love to hear from you</p>
+          <p className="max-w-2xl mx-auto text-sm sm:text-base">
             Have questions about our APIs? Want to report a bug? Or maybe you're
             interested in partnering with us? Reach out using any of the methods
             below.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-6 sm:mb-8 md:mb-12">
           {/* Contact Form */}
-          <div className="bg-[#1A2332] rounded-lg shadow-lg p-8">
-            <h2 className="text-2xl font-semibold mb-6 text-[#00B2FF]">
+          <div className="bg-[#1A2332] rounded-lg shadow-lg p-4 sm:p-6 md:p-8">
+            <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-[#00B2FF]">
               Send Us a Message
             </h2>
 
             {submitStatus === 'success' && (
-              <div className="bg-green-900/30 border border-green-700 text-green-100 rounded-md p-4 mb-6">
-                <p className="font-medium">Thank you for your message!</p>
-                <p className="text-sm mt-1">
+              <div className="bg-green-900/30 border border-green-700 text-green-100 rounded-md p-3 sm:p-4 mb-4 sm:mb-6">
+                <p className="font-medium text-sm sm:text-base">Thank you for your message!</p>
+                <p className="text-xs sm:text-sm mt-1">
                   We'll get back to you as soon as possible.
                 </p>
               </div>
             )}
             {submitStatus === 'error' && (
-              <div className="bg-red-900/30 border border-red-700 text-red-100 rounded-md p-4 mb-6">
-                <p className="font-medium">Oops! Something went wrong.</p>
-                <p className="text-sm mt-1">
+              <div className="bg-red-900/30 border border-red-700 text-red-100 rounded-md p-3 sm:p-4 mb-4 sm:mb-6">
+                <p className="font-medium text-sm sm:text-base">Oops! Something went wrong.</p>
+                <p className="text-xs sm:text-sm mt-1">
                   Please try again later or use another contact method.
                 </p>
               </div>
             )}
 
-            <form onSubmit={handleSubmit}>
-              <div className="mb-6">
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium mb-2"
-                >
-                  Name
-                </label>
+            <form onSubmit={handleSubmit} noValidate>
+              <InputWrapper id="name" label="Name">
                 <input
                   type="text"
                   id="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 bg-[#0D1525] border border-[#00B2FF] rounded-md focus:outline-none focus:ring-2 focus:ring-[#00D4FF] text-[#D9E1E8]"
+                  onBlur={handleBlur}
+                  className={`w-full px-3 sm:px-4 py-1.5 sm:py-2 bg-[#0D1525] border ${
+                    touched.name && errors.name ? 'border-red-400' : 
+                    touched.name && !errors.name ? 'border-green-400' : 
+                    'border-[#00B2FF]'
+                  } rounded-md focus:outline-none focus:ring-2 focus:ring-[#00D4FF] text-[#D9E1E8] text-sm pr-8`}
                   required
                   disabled={isSubmitting}
                 />
-              </div>
+              </InputWrapper>
 
-              <div className="mb-6">
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium mb-2"
-                >
-                  Email
-                </label>
+              <InputWrapper id="email" label="Email">
                 <input
                   type="email"
                   id="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 bg-[#0D1525] border border-[#00B2FF] rounded-md focus:outline-none focus:ring-2 focus:ring-[#00D4FF] text-[#D9E1E8]"
+                  onBlur={handleBlur}
+                  className={`w-full px-3 sm:px-4 py-1.5 sm:py-2 bg-[#0D1525] border ${
+                    touched.email && errors.email ? 'border-red-400' : 
+                    touched.email && !errors.email ? 'border-green-400' : 
+                    'border-[#00B2FF]'
+                  } rounded-md focus:outline-none focus:ring-2 focus:ring-[#00D4FF] text-[#D9E1E8] text-sm pr-8`}
                   required
                   disabled={isSubmitting}
                 />
-              </div>
+              </InputWrapper>
 
-              <div className="mb-6">
-                <label
-                  htmlFor="subject"
-                  className="block text-sm font-medium mb-2"
-                >
-                  Subject
-                </label>
+              <InputWrapper id="subject" label="Subject">
                 <select
                   id="subject"
                   value={formData.subject}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 bg-[#0D1525] border border-[#00B2FF] rounded-md focus:outline-none focus:ring-2 focus:ring-[#00D4FF] text-[#D9E1E8]"
+                  onBlur={handleBlur}
+                  className={`w-full px-3 sm:px-4 py-1.5 sm:py-2 bg-[#0D1525] border ${
+                    touched.subject && errors.subject ? 'border-red-400' : 
+                    touched.subject && !errors.subject ? 'border-green-400' : 
+                    'border-[#00B2FF]'
+                  } rounded-md focus:outline-none focus:ring-2 focus:ring-[#00D4FF] text-[#D9E1E8] text-sm pr-8`}
                   required
                   disabled={isSubmitting}
                 >
@@ -172,36 +270,35 @@ export default function ContactPage() {
                   <option value="bug">Bug Report</option>
                   <option value="partnership">Partnership Opportunity</option>
                 </select>
-              </div>
+              </InputWrapper>
 
-              <div className="mb-6">
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-medium mb-2"
-                >
-                  Message
-                </label>
+              <InputWrapper id="message" label="Message">
                 <textarea
                   id="message"
-                  rows={6}
+                  rows={4}
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 bg-[#0D1525] border border-[#00B2FF] rounded-md focus:outline-none focus:ring-2 focus:ring-[#00D4FF] text-[#D9E1E8]"
+                  onBlur={handleBlur}
+                  className={`w-full px-3 sm:px-4 py-1.5 sm:py-2 bg-[#0D1525] border ${
+                    touched.message && errors.message ? 'border-red-400' : 
+                    touched.message && !errors.message ? 'border-green-400' : 
+                    'border-[#00B2FF]'
+                  } rounded-md focus:outline-none focus:ring-2 focus:ring-[#00D4FF] text-[#D9E1E8] text-sm pr-8`}
                   required
                   disabled={isSubmitting}
                 ></textarea>
-              </div>
+              </InputWrapper>
 
               <div className="text-center">
                 <button
                   type="submit"
-                  className="px-6 py-3 bg-[#00B2FF] text-[#0D1525] rounded-md font-medium shadow-lg hover:bg-[#00D4FF] transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-4 sm:px-6 py-2 sm:py-3 bg-[#00B2FF] text-[#0D1525] rounded-md font-medium shadow-lg hover:bg-[#00D4FF] transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
-                    <span className="flex items-center">
+                    <span className="flex items-center justify-center">
                       <svg
-                        className="animate-spin -ml-1 mr-2 h-4 w-4 text-[#0D1525]"
+                        className="animate-spin -ml-1 mr-2 h-3 w-3 sm:h-4 sm:w-4 text-[#0D1525]"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
@@ -232,128 +329,92 @@ export default function ContactPage() {
 
           {/* Contact Information */}
           <div>
-            <div className="bg-[#1A2332] rounded-lg shadow-lg p-8 mb-8">
-              <h2 className="text-2xl font-semibold mb-6 text-[#00B2FF]">
+            <div className="bg-[#1A2332] rounded-lg shadow-lg p-4 sm:p-6 md:p-8 mb-4 sm:mb-6 md:mb-8">
+              <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-[#00B2FF]">
                 Contact Information
               </h2>
 
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 <div className="flex items-start">
-                  <div className="text-[#00B2FF] mr-4 mt-1">
-                    <FaEnvelope />
+                  <div className="text-[#00B2FF] mr-3 sm:mr-4 mt-1">
+                    <FaEnvelope className="text-lg sm:text-xl" />
                   </div>
                   <div>
-                    <h3 className="font-medium">Email</h3>
+                    <h3 className="font-medium text-sm sm:text-base">Email</h3>
                     <a
                       href="mailto:support@softtouch.dev"
-                      className="text-gray-300 hover:text-[#00B2FF]"
+                      className="text-gray-300 hover:text-[#00B2FF] text-xs sm:text-sm"
                       onClick={(e) => e.stopPropagation()}
                     >
                       support@softtouch.dev
                     </a>
-                    <p className="text-gray-400 text-sm mt-1">
-                      We aim to respond within 24 hours
-                    </p>
                   </div>
                 </div>
 
                 <div className="flex items-start">
-                  <div className="text-[#00B2FF] mr-4 mt-1">
-                    <FaDiscord />
+                  <div className="text-[#00B2FF] mr-3 sm:mr-4 mt-1">
+                    <FaDiscord className="text-lg sm:text-xl" />
                   </div>
                   <div>
-                    <h3 className="font-medium">Discord</h3>
+                    <h3 className="font-medium text-sm sm:text-base">Discord</h3>
                     <a
-                      href="https://discord.gg/wAGzpZXexg"
+                      href="https://discord.gg/softtouch"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-gray-300 hover:text-[#00B2FF]"
+                      className="text-gray-300 hover:text-[#00B2FF] text-xs sm:text-sm"
                     >
-                      discord.gg/softtouch
+                      Join our community
                     </a>
-                    <p className="text-gray-400 text-sm mt-1">
-                      Join our server for live support
-                    </p>
                   </div>
                 </div>
 
                 <div className="flex items-start">
-                  <div className="text-[#00B2FF] mr-4 mt-1">
-                    <FaGithub />
+                  <div className="text-[#00B2FF] mr-3 sm:mr-4 mt-1">
+                    <FaGithub className="text-lg sm:text-xl" />
                   </div>
                   <div>
-                    <h3 className="font-medium">GitHub</h3>
+                    <h3 className="font-medium text-sm sm:text-base">GitHub</h3>
                     <a
                       href="https://github.com/softtouch"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-gray-300 hover:text-[#00B2FF]"
+                      className="text-gray-300 hover:text-[#00B2FF] text-xs sm:text-sm"
                     >
-                      github.com/softtouch
+                      View our repositories
                     </a>
-                    <p className="text-gray-400 text-sm mt-1">
-                      Report issues or contribute to our project
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="text-[#00B2FF] mr-4 mt-1">
-                    <FaClock />
-                  </div>
-                  <div>
-                    <h3 className="font-medium">Support Hours</h3>
-                    <p className="text-gray-300">
-                      Monday - Friday: 9AM - 6PM EST
-                    </p>
-                    <p className="text-gray-400 text-sm mt-1">
-                      We monitor urgent issues 24/7
-                    </p>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="bg-[#1A2332] rounded-lg shadow-lg p-8">
-              <h2 className="text-2xl font-semibold mb-6 text-[#00B2FF]">
-                FAQ
+            <div className="bg-[#1A2332] rounded-lg shadow-lg p-4 sm:p-6 md:p-8">
+              <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-[#00B2FF]">
+                Business Hours
               </h2>
-              <div className="space-y-4">
-                <div>
-                  <h3 className="font-medium text-[#00B2FF]">
-                    Do I need to sign up to use the APIs?
-                  </h3>
-                  <p className="mt-1">
-                    No! All our APIs are completely free with no signup
-                    required. You can start using them immediately without any
-                    registration.
-                  </p>
+
+              <div className="space-y-4 sm:space-y-6">
+                <div className="flex items-start">
+                  <div className="text-[#00B2FF] mr-3 sm:mr-4 mt-1">
+                    <FaClock className="text-lg sm:text-xl" />
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-sm sm:text-base">Support Hours</h3>
+                    <p className="text-gray-300 text-xs sm:text-sm">
+                      Monday - Friday: 9:00 AM - 5:00 PM EST
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-medium text-[#00B2FF]">
-                    Are your APIs really free?
-                  </h3>
-                  <p className="mt-1">
-                    Yes! All our APIs are 100% free to use with absolutely no
-                    restrictions or limits. We're committed to keeping them
-                    freely accessible for everyone.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-medium text-[#00B2FF]">
-                    How can I contribute?
-                  </h3>
-                  <p className="mt-1">
-                    We welcome contributions! You can contribute code,
-                    documentation, or support us financially. Check out our{" "}
-                    <SmoothNavLink
-                      to="/join"
-                      className="text-[#00B2FF] hover:underline"
-                    >
-                      contribution guidelines
-                    </SmoothNavLink>
-                    .
-                  </p>
+
+                <div className="flex items-start">
+                  <div className="text-[#00B2FF] mr-3 sm:mr-4 mt-1">
+                    <FaDollarSign className="text-lg sm:text-xl" />
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-sm sm:text-base">Pricing</h3>
+                    <p className="text-gray-300 text-xs sm:text-sm">
+                      All our APIs are completely free to use
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
