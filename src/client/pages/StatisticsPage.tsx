@@ -139,45 +139,45 @@ export default function StatisticsPage() {
     })) || [];
 
   return (
-    <section className="animate-fadeIn py-8 md:py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-[#00B2FF]">
+    <section className="animate-fadeIn py-4 sm:py-6 md:py-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
+        <div className="text-center mb-4 sm:mb-6">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#00B2FF]">
             API Usage Statistics
           </h1>
-          <p className="mt-2 text-xl">Real-time data insights</p>
+          <p className="mt-1 sm:mt-2 text-sm sm:text-base md:text-lg">Real-time data insights</p>
         </div>
 
         {/* Summary Cards */}
         {statistics && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <div className="bg-[#1A2332] rounded-lg shadow-lg p-4 sm:p-6 text-center">
-              <p className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 mb-6 sm:mb-8 md:mb-12">
+            <div className="bg-[#1A2332] rounded-lg shadow-lg p-3 sm:p-4 md:p-6 text-center">
+              <p className="text-sm sm:text-base font-semibold mb-1">
                 Total Requests
               </p>
-              <p className="text-2xl sm:text-3xl md:text-4xl text-[#00B2FF] font-bold truncate">
+              <p className="text-lg sm:text-xl md:text-2xl text-[#00B2FF] font-bold truncate">
                 {formatNumber(statistics.totalRequests)}
               </p>
-              <p className="text-xs sm:text-sm mt-1 sm:mt-2 text-gray-400">
+              <p className="text-xs mt-1 text-gray-400">
                 All time
               </p>
             </div>
-            <div className="bg-[#1A2332] rounded-lg shadow-lg p-4 sm:p-6 text-center">
-              <p className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">
+            <div className="bg-[#1A2332] rounded-lg shadow-lg p-3 sm:p-4 md:p-6 text-center">
+              <p className="text-sm sm:text-base font-semibold mb-1">
                 Unique Users
               </p>
-              <p className="text-2xl sm:text-3xl md:text-4xl text-[#00B2FF] font-bold truncate">
+              <p className="text-lg sm:text-xl md:text-2xl text-[#00B2FF] font-bold truncate">
                 {formatNumber(statistics.uniqueUsers)}
               </p>
-              <p className="text-xs sm:text-sm mt-1 sm:mt-2 text-gray-400">
+              <p className="text-xs mt-1 text-gray-400">
                 Last 30 days
               </p>
             </div>
-            <div className="bg-[#1A2332] rounded-lg shadow-lg p-4 sm:p-6 text-center">
-              <p className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">
+            <div className="bg-[#1A2332] rounded-lg shadow-lg p-3 sm:p-4 md:p-6 text-center">
+              <p className="text-sm sm:text-base font-semibold mb-1">
                 Average Success Rate
               </p>
-              <p className="text-2xl sm:text-3xl md:text-4xl text-[#00B2FF] font-bold truncate">
+              <p className="text-lg sm:text-xl md:text-2xl text-[#00B2FF] font-bold truncate">
                 {(
                   statistics.apis.reduce(
                     (sum, api) => sum + api.successRate,
@@ -186,7 +186,7 @@ export default function StatisticsPage() {
                 ).toFixed(2)}
                 %
               </p>
-              <p className="text-xs sm:text-sm mt-1 sm:mt-2 text-gray-400">
+              <p className="text-xs mt-1 text-gray-400">
                 Across all APIs
               </p>
             </div>
@@ -194,12 +194,12 @@ export default function StatisticsPage() {
         )}
 
         {/* Controls */}
-        <div className="flex flex-wrap items-center justify-between mb-8 gap-4">
-          <div className="flex space-x-2 items-center">
-            <p className="text-gray-300 mr-2">View:</p>
+        <div className="flex flex-wrap items-center justify-between mb-4 sm:mb-6 gap-2 sm:gap-3">
+          <div className="flex space-x-1 sm:space-x-2 items-center">
+            <p className="text-gray-300 text-xs mr-1 sm:mr-2">View:</p>
             <button
               onClick={() => setViewMode("daily")}
-              className={`px-4 py-2 rounded-md ${
+              className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-md text-xs ${
                 viewMode === "daily"
                   ? "bg-[#00B2FF] text-[#0D1525]"
                   : "bg-[#1A2332] text-gray-300"
@@ -209,7 +209,7 @@ export default function StatisticsPage() {
             </button>
             <button
               onClick={() => setViewMode("weekly")}
-              className={`px-4 py-2 rounded-md ${
+              className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-md text-xs ${
                 viewMode === "weekly"
                   ? "bg-[#00B2FF] text-[#0D1525]"
                   : "bg-[#1A2332] text-gray-300"
@@ -219,7 +219,7 @@ export default function StatisticsPage() {
             </button>
             <button
               onClick={() => setViewMode("monthly")}
-              className={`px-4 py-2 rounded-md ${
+              className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-md text-xs ${
                 viewMode === "monthly"
                   ? "bg-[#00B2FF] text-[#0D1525]"
                   : "bg-[#1A2332] text-gray-300"
@@ -232,17 +232,17 @@ export default function StatisticsPage() {
 
         {/* Data last updated timestamp */}
         {statistics && (
-          <p className="text-center text-gray-400 text-sm mb-8">
+          <p className="text-center text-gray-400 text-xs mb-4 sm:mb-6">
             Last updated: {new Date(statistics.timestamp).toLocaleString()}
           </p>
         )}
 
         {/* Requests by API Chart */}
-        <div className="bg-[#1A2332] rounded-lg shadow-lg p-4 md:p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-6">
+        <div className="bg-[#1A2332] rounded-lg shadow-lg p-3 sm:p-4 md:p-6 mb-4 sm:mb-6 md:mb-8">
+          <h2 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 md:mb-6">
             API Requests ({viewMode})
           </h2>
-          <div className="h-80">
+          <div className="h-60 sm:h-70 md:h-80">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={chartData}
@@ -409,17 +409,17 @@ export default function StatisticsPage() {
         </div>
 
         {/* Free APIs Reminder */}
-        <div className="bg-[#1A2332] rounded-lg shadow-lg p-6 text-center">
-          <h2 className="text-2xl font-semibold text-[#00B2FF] mb-4">
+        <div className="bg-[#1A2332] rounded-lg shadow-lg p-3 sm:p-4 md:p-6 text-center">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-[#00B2FF] mb-2 sm:mb-3">
             All SoftTouch APIs are 100% Free
           </h2>
-          <p className="mb-6">
+          <p className="text-sm sm:text-base mb-3 sm:mb-4">
             No API keys, no rate limits, no hidden costs - just reliable APIs
             available to everyone.
           </p>
-          <div className="mt-4 flex justify-center">
+          <div className="mt-2 sm:mt-3 flex justify-center">
             <Link href="/apis">
-              <span className="inline-block px-8 py-3 border border-[#00B2FF] bg-[#00B2FF] text-[#0D1525] rounded-md text-lg font-medium shadow-lg hover:bg-transparent hover:text-[#00B2FF] transition duration-300 focus:outline-none focus:ring-2 focus:ring-[#00D4FF] focus:ring-offset-2 focus:ring-offset-[#0D1525] cursor-pointer">
+              <span className="inline-block px-4 sm:px-6 py-2 sm:py-2.5 border border-[#00B2FF] bg-[#00B2FF] text-[#0D1525] rounded-md text-sm sm:text-base font-medium shadow-lg hover:bg-transparent hover:text-[#00B2FF] transition duration-300 focus:outline-none focus:ring-2 focus:ring-[#00D4FF] focus:ring-offset-2 focus:ring-offset-[#0D1525] cursor-pointer">
                 Explore APIs
               </span>
             </Link>
