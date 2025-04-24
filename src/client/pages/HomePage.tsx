@@ -1029,14 +1029,14 @@ detectLanguage('Hello, world!');
                 className="flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-3"
               >
                 <motion.div variants={fadeInUp}>
-                  <Link href="#documentation">
+                  <Link href="/docs">
                     <span className="w-full sm:w-auto inline-block px-3 py-2 sm:px-4 sm:py-2.5 border-2 border-[#00B2FF] text-[#00B2FF] rounded-md text-xs sm:text-sm font-medium hover:bg-[#00B2FF] hover:text-[#0D1525] transition-all duration-300 transform hover:scale-105">
                       Read Documentation
                     </span>
                   </Link>
                 </motion.div>
                 <motion.div variants={fadeInUp}>
-                  <Link href="#apis">
+                  <Link href="/apis">
                     <span className="w-full sm:w-auto inline-block px-3 py-2 sm:px-4 sm:py-2.5 border-2 border-[#00B2FF] bg-[#00B2FF] text-[#0D1525] rounded-md text-xs sm:text-sm font-medium hover:bg-transparent hover:text-[#00B2FF] transition-all duration-300 transform hover:scale-105">
                       Start Building
                     </span>

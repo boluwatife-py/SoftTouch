@@ -12,22 +12,74 @@ import {
 } from "react-icons/fa";
 import SmoothNavLink from "@/components/SmoothNavLink";
 
+interface FormData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
+
 interface FormErrors {
   name?: string;
   email?: string;
   subject?: string;
   message?: string;
+  [key: string]: string | undefined;
 }
 
+interface FormTouched {
+  name?: boolean;
+  email?: boolean;
+  subject?: boolean;
+  message?: boolean;
+  [key: string]: boolean | undefined;
+}
+
+interface InputWrapperProps {
+  children: React.ReactNode;
+  id: string;
+  label: string;
+  touched: FormTouched;
+  errors: FormErrors;
+  formData: FormData;
+}
+
+const InputWrapper = ({ children, id, label, touched, errors, formData }: InputWrapperProps) => (
+  <div className="mb-4 sm:mb-6">
+    <label
+      htmlFor={id}
+      className="block text-xs sm:text-sm font-medium mb-1 sm:mb-2"
+    >
+      {label}
+    </label>
+    <div className="relative">
+      {children}
+      {touched[id] && errors[id] && (
+        <div className="absolute right-2 top-1/2 -translate-y-1/2 text-red-400">
+          <FaExclamationTriangle className="h-4 w-4" />
+        </div>
+      )}
+      {touched[id] && !errors[id] && formData[id as keyof FormData] && (
+        <div className="absolute right-2 top-1/2 -translate-y-1/2 text-green-400">
+          <FaCheck className="h-4 w-4" />
+        </div>
+      )}
+    </div>
+    {touched[id] && errors[id] && (
+      <p className="mt-1 text-xs text-red-400">{errors[id]}</p>
+    )}
+  </div>
+);
+
 export default function ContactPage() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     subject: "",
     message: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
-  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [touched, setTouched] = useState<FormTouched>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<null | 'success' | 'error'>(null);
 
@@ -72,7 +124,7 @@ export default function ContactPage() {
   const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { id } = e.target;
     setTouched(prev => ({ ...prev, [id]: true }));
-    const error = validateField(id, formData[id as keyof typeof formData]);
+    const error = validateField(id, formData[id as keyof FormData]);
     setErrors(prev => ({ ...prev, [id]: error }));
   };
 
@@ -148,32 +200,15 @@ export default function ContactPage() {
     }, 5000);
   };
 
-  const InputWrapper = ({ children, id, label }: { children: React.ReactNode; id: string; label: string }) => (
-    <div className="mb-4 sm:mb-6">
-      <label
-        htmlFor={id}
-        className="block text-xs sm:text-sm font-medium mb-1 sm:mb-2"
-      >
-        {label}
-      </label>
-      <div className="relative">
-        {children}
-        {touched[id] && errors[id] && (
-          <div className="absolute right-2 top-1/2 -translate-y-1/2 text-red-400">
-            <FaExclamationTriangle className="h-4 w-4" />
-          </div>
-        )}
-        {touched[id] && !errors[id] && formData[id as keyof typeof formData] && (
-          <div className="absolute right-2 top-1/2 -translate-y-1/2 text-green-400">
-            <FaCheck className="h-4 w-4" />
-          </div>
-        )}
-      </div>
-      {touched[id] && errors[id] && (
-        <p className="mt-1 text-xs text-red-400">{errors[id]}</p>
-      )}
-    </div>
-  );
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    if (e.key === ' ' && e.target instanceof HTMLInputElement) {
+      e.preventDefault();
+    }
+  };
+
+  const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    // Prevent form-level keyboard events if needed
+  };
 
   return (
     <section className="animate-fadeIn py-8 sm:py-12 md:py-16">
@@ -214,14 +249,15 @@ export default function ContactPage() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} noValidate>
-              <InputWrapper id="name" label="Name">
+            <form onSubmit={handleSubmit} className="space-y-4" onKeyDown={handleFormKeyDown}>
+              <InputWrapper id="name" label="Name" touched={touched} errors={errors} formData={formData}>
                 <input
                   type="text"
                   id="name"
                   value={formData.name}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  onKeyDown={handleInputKeyDown}
                   className={`w-full px-3 sm:px-4 py-1.5 sm:py-2 bg-[#0D1525] border ${
                     touched.name && errors.name ? 'border-red-400' : 
                     touched.name && !errors.name ? 'border-green-400' : 
@@ -229,16 +265,18 @@ export default function ContactPage() {
                   } rounded-md focus:outline-none focus:ring-2 focus:ring-[#00D4FF] text-[#D9E1E8] text-sm pr-8`}
                   required
                   disabled={isSubmitting}
+                  autoComplete="name"
                 />
               </InputWrapper>
 
-              <InputWrapper id="email" label="Email">
+              <InputWrapper id="email" label="Email" touched={touched} errors={errors} formData={formData}>
                 <input
                   type="email"
                   id="email"
                   value={formData.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  onKeyDown={handleInputKeyDown}
                   className={`w-full px-3 sm:px-4 py-1.5 sm:py-2 bg-[#0D1525] border ${
                     touched.email && errors.email ? 'border-red-400' : 
                     touched.email && !errors.email ? 'border-green-400' : 
@@ -246,15 +284,17 @@ export default function ContactPage() {
                   } rounded-md focus:outline-none focus:ring-2 focus:ring-[#00D4FF] text-[#D9E1E8] text-sm pr-8`}
                   required
                   disabled={isSubmitting}
+                  autoComplete="email"
                 />
               </InputWrapper>
 
-              <InputWrapper id="subject" label="Subject">
+              <InputWrapper id="subject" label="Subject" touched={touched} errors={errors} formData={formData}>
                 <select
                   id="subject"
                   value={formData.subject}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  onKeyDown={handleInputKeyDown}
                   className={`w-full px-3 sm:px-4 py-1.5 sm:py-2 bg-[#0D1525] border ${
                     touched.subject && errors.subject ? 'border-red-400' : 
                     touched.subject && !errors.subject ? 'border-green-400' : 
@@ -272,13 +312,14 @@ export default function ContactPage() {
                 </select>
               </InputWrapper>
 
-              <InputWrapper id="message" label="Message">
+              <InputWrapper id="message" label="Message" touched={touched} errors={errors} formData={formData}>
                 <textarea
                   id="message"
                   rows={4}
                   value={formData.message}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  onKeyDown={handleInputKeyDown}
                   className={`w-full px-3 sm:px-4 py-1.5 sm:py-2 bg-[#0D1525] border ${
                     touched.message && errors.message ? 'border-red-400' : 
                     touched.message && !errors.message ? 'border-green-400' : 
@@ -289,7 +330,7 @@ export default function ContactPage() {
                 ></textarea>
               </InputWrapper>
 
-              <div className="text-center">
+              <div className="flex justify-end">
                 <button
                   type="submit"
                   className="px-4 sm:px-6 py-2 sm:py-3 bg-[#00B2FF] text-[#0D1525] rounded-md font-medium shadow-lg hover:bg-[#00D4FF] transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
